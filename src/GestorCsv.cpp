@@ -6,7 +6,7 @@ vector<int> GestorCsv::leerProgramasCsv(string &ruta)
     ifstream archivoProgramasCsv(ruta);
     if (!(archivoProgramasCsv.is_open()))
     {
-        cout << "Archivo " << ruta << " no se pudo abrir correctamente" << endl;
+        throw ios_base::failure("Archivo " + ruta + " no se pudo abrir correctamente");
     }
     else
     {
@@ -133,7 +133,8 @@ vector<vector<string>> GestorCsv::leerArchivoSegunda(string &rutaBase, string &a
     ifstream archivoSegundo(rutaCompleta);
     if (!(archivoSegundo.is_open()))
     {
-        cout << "Archivo " << rutaCompleta << " no se pudo abrir correctamente" << endl;
+        throw ios_base::failure("Archivo " + rutaCompleta + " no se pudo abrir correctamente");
+        // cout << "Archivo " << rutaCompleta << " no se pudo abrir correctamente" << endl;
     }
     else
     {
@@ -243,7 +244,8 @@ vector<vector<string>> GestorCsv::leerArchivo(string &rutaBase, string &ano, vec
     ifstream archivoSegundo(rutaCompleta);
     if (!(archivoSegundo.is_open()))
     {
-        cout << "Archivo " << rutaCompleta << " no se pudo abrir correctamente" << endl;
+        throw ios_base::failure("Archivo " + rutaCompleta + " no se pudo abrir correctamente");
+        // cout << "Archivo " << rutaCompleta << " no se pudo abrir correctamente" << endl;
     }
     else
     {

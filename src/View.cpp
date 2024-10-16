@@ -2,17 +2,23 @@
 
 View::View()
 {
-    // NEW quitar estas variables de aquí y del constructor del SNIESController
-    //  estas constantes las leerá el SNIESController del archivo de Settings.h
-    //  Completar el archivo con el resto de constantes necesarias
-    string ruta1 = string("C:/SNIES_EXTRACTOR/inputs/programas.csv");
-    string ruta2 = string("C:/SNIES_EXTRACTOR/inputs/admitidos");
-    string ruta3 = string("C:/SNIES_EXTRACTOR/inputs/graduados");
-    string ruta4 = string("C:/SNIES_EXTRACTOR/inputs/inscritos");
-    string ruta5 = string("C:/SNIES_EXTRACTOR/inputs/matriculados");
-    string ruta6 = string("C:/SNIES_EXTRACTOR/inputs/matriculadosPrimerSemestre");
-    string ruta7 = string("C:/SNIES_EXTRACTOR/outputs/");
-    controlador = SNIESController(ruta1, ruta2, ruta3, ruta4, ruta5, ruta6, ruta7);
+    try
+    {
+        string ruta1 = string("C:/proyecto-2-snies-extractor-chikii/docs/inputs/programas.csv");
+        string ruta2 = string("C:/proyecto-2-snies-extractor-chikii/docs/inputs/admitidos");
+        string ruta3 = string("C:/proyecto-2-snies-extractor-chikii/docs/inputs/graduados");
+        string ruta4 = string("C:/proyecto-2-snies-extractor-chikii/docs/inputs/inscritos");
+        string ruta5 = string("C:/proyecto-2-snies-extractor-chikii/docs/inputs/matriculados");
+        string ruta6 = string("C:/proyecto-2-snies-extractor-chikii/docs/inputs/matriculadosPrimerSemestre");
+        string ruta7 = string("C:/proyecto-2-snies-extractor-chikii/docs/outputs/");
+
+        controlador = SNIESController(ruta1, ruta2, ruta3, ruta4, ruta5, ruta6, ruta7);
+    }
+    catch (const ios_base::failure &e)
+    {
+        cerr << "Error al abrir uno de los archivos: " << e.what() << std::endl;
+        throw;
+    }
 }
 
 View::~View()
@@ -75,6 +81,7 @@ bool View::mostrarPantallaBienvenido()
             if (i == 1)
             {
                 cout << "El valor ingresado fue invalido!" << endl;
+                // throw domain_error("El valor ingresado fue invalido!");
                 cout << "Por favor ingrese un valor valido la proxima" << endl;
                 cout << "Presione 'OK' y Enter para continuar: " << endl;
                 cin >> userText;
@@ -100,6 +107,7 @@ bool View::mostrarPantallaBienvenido()
         controlador.procesarDatosCsv(anio1, ano2);
         cout << "Datos procesados con exito!" << endl;
     }
+
     return parametrizacionBool;
 }
 
@@ -134,7 +142,7 @@ void View::mostrarDatosExtra()
 
 void View::buscarPorPalabraClaveYFormacion()
 {
-    char opcionYN = 'y', opcionCSV;
+    char opcionYN = 'y', opcionOutput;
     string palabraClave;
     bool convertirCSV;
     int idFormacionAcademica;
@@ -148,12 +156,12 @@ void View::buscarPorPalabraClaveYFormacion()
 
         if (opcionYN == 'y')
         {
-            cout << "Deseas convertir convertir los datos del programa academico a un CSV?(Y/N): " << endl;
-            cin >> opcionCSV;
+            cout << "Deseas convertir los datos del programa academico a un CSV, TXT O JSON?: " << endl;
+            cin >> opcionOutput;
             cout << "\n";
-            opcionCSV = tolower(opcionCSV);
+            opcionOutput = tolower(opcionOutput);
 
-            if (opcionCSV == 'y')
+            if (opcionOutput == 'y')
             {
                 convertirCSV = true;
             }
