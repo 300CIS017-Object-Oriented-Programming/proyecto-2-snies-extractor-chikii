@@ -2,17 +2,23 @@
 
 View::View()
 {
-    // NEW quitar estas variables de aquí y del constructor del SNIESController
-    //  estas constantes las leerá el SNIESController del archivo de Settings.h
-    //  Completar el archivo con el resto de constantes necesarias
-    string ruta1 = string("C:/SNIES_EXTRACTOR/inputs/programas.csv");
-    string ruta2 = string("C:/SNIES_EXTRACTOR/inputs/admitidos");
-    string ruta3 = string("C:/SNIES_EXTRACTOR/inputs/graduados");
-    string ruta4 = string("C:/SNIES_EXTRACTOR/inputs/inscritos");
-    string ruta5 = string("C:/SNIES_EXTRACTOR/inputs/matriculados");
-    string ruta6 = string("C:/SNIES_EXTRACTOR/inputs/matriculadosPrimerSemestre");
-    string ruta7 = string("C:/SNIES_EXTRACTOR/outputs/");
-    controlador = SNIESController(ruta1, ruta2, ruta3, ruta4, ruta5, ruta6, ruta7);
+    try
+    {
+        string ruta1 = string("C:/proyecto-2-snies-extractor-chikii/docs/inputs/programas.csv");
+        string ruta2 = string("C:/proyecto-2-snies-extractor-chikii/docs/inputs/admitidos");
+        string ruta3 = string("C:/proyecto-2-snies-extractor-chikii/docs/inputs/graduados");
+        string ruta4 = string("C:/proyecto-2-snies-extractor-chikii/docs/inputs/inscritos");
+        string ruta5 = string("C:/proyecto-2-snies-extractor-chikii/docs/inputs/matriculados");
+        string ruta6 = string("C:/proyecto-2-snies-extractor-chikii/docs/inputs/matriculadosPrimerSemestre");
+        string ruta7 = string("C:/proyecto-2-snies-extractor-chikii/docs/outputs/");
+
+        controlador = SNIESController(ruta1, ruta2, ruta3, ruta4, ruta5, ruta6, ruta7);
+    }
+    catch (const ios_base::failure &e)
+    {
+        cerr << "ERROR: " << e.what() << std::endl;
+        throw;
+    }
 }
 
 View::~View()
@@ -37,69 +43,79 @@ bool View::mostrarPantallaBienvenido()
     // para asegurar que el usuario ingrese un valor valido
     // pasarlo a un método que se pueda usar en otros lugares
     userAnswer = static_cast<char>(tolower(userAnswer));
-    if (userAnswer == 'y')
+    try
     {
-        parametrizacionBool = true;
-
-        string userText;
-        cout << "A continuacion se procesaran los datos de los programas academicos seleccionados en /programas.csv..." << endl;
-
-        string anio1("abc");
-        string ano2("abc");
-        string anoAux;
-        int i = 0;
-        bool anosValido = false;
-        // FIXME pasar la lógica del bucle a un método reutlizable
-        // Usar en el while una bandera y simplificar el código
-        // Bucle para leer un valor valido del año1
-        while (!(isConvetibleToInt(anio1)))
+        if (userAnswer == 'y')
         {
-            if (i == 1)
+            parametrizacionBool = true;
+
+            string userText;
+            cout << "A continuacion se procesaran los datos de los programas academicos seleccionados en /programas.csv..." << endl;
+
+            string anio1("abc");
+            string ano2("abc");
+            string anoAux;
+            int i = 0;
+            bool anosValido = false;
+            // FIXME pasar la lógica del bucle a un método reutlizable
+            // Usar en el while una bandera y simplificar el código
+            // Bucle para leer un valor valido del año1
+            while (!(isConvetibleToInt(anio1)))
             {
-                cout << "El valor ingresado fue invalido!" << endl;
-                cout << "Por favor ingrese un valor valido la proxima" << endl;
-                cout << "Presione 'OK' y Enter para continuar: " << endl;
-                cin >> userText;
+                if (i == 1)
+                {
+                    throw domain_error("El valor ingresado fue invalido!, Por favor ingrese un valor valido la proxima");
+                    cout << "Presione 'OK' y Enter para continuar: " << endl;
+                    cin >> userText;
+                    cout << endl;
+                }
+                cout << "Escriba el primer ano de busqueda: " << endl;
+                cin >> anio1;
                 cout << endl;
+                i = 1;
             }
-            cout << "Escriba el primer ano de busqueda: " << endl;
-            cin >> anio1;
-            cout << endl;
-            i = 1;
-        }
 
-        i = 0;
-        // Bucle para leer un valor valido del año2
-        while (!(isConvetibleToInt(ano2)))
-        {
-            if (i == 1)
+            i = 0;
+            // Bucle para leer un valor valido del año2
+            while (!(isConvetibleToInt(ano2)))
             {
-                cout << "El valor ingresado fue invalido!" << endl;
-                cout << "Por favor ingrese un valor valido la proxima" << endl;
-                cout << "Presione 'OK' y Enter para continuar: " << endl;
-                cin >> userText;
+                if (i == 1)
+                {
+                    throw domain_error("El valor ingresado fue invalido!, Por favor ingrese un valor valido la proxima");
+                    cout << "Presione 'OK' y Enter para continuar: " << endl;
+                    cin >> userText;
+                    cout << endl;
+                }
+                cout << "Escriba el segundo ano de busqueda: " << endl;
+                cin >> ano2;
                 cout << endl;
+                i = 1;
             }
-            cout << "Escriba el segundo ano de busqueda: " << endl;
-            cin >> ano2;
-            cout << endl;
-            i = 1;
-        }
 
-        // Organizo los años
-        // FIXME: Crear un método para hacer que el segundo año sea siempre
-        // mayor que el primer año
-        if (stoi(ano2) < stoi(anio1))
-        {
-            anoAux = anio1;
-            anio1 = ano2;
-            ano2 = anoAux;
-        }
+            // Organizo los años
+            // FIXME: Crear un método para hacer que el segundo año sea siempre
+            // mayor que el primer año
+            if (stoi(ano2) < stoi(anio1))
+            {
+                anoAux = anio1;
+                anio1 = ano2;
+                ano2 = anoAux;
+            }
 
-        cout << "Procesando datos ..." << endl;
-        controlador.procesarDatosCsv(anio1, ano2);
-        cout << "Datos procesados con exito!" << endl;
+            cout << "Procesando datos ..." << endl;
+            controlador.procesarDatosCsv(anio1, ano2);
+            cout << "Datos procesados con exito!" << endl;
+        }
     }
+    catch (const ios_base::failure &e)
+    {
+        cerr << "ERROR: " << e.what() << endl;
+    } // igual pasa a lo siguiente!
+    /*else
+    {
+        throw domain_error("Opcion invalida");
+    }*/
+
     return parametrizacionBool;
 }
 
@@ -114,7 +130,7 @@ void View::mostrarDatosExtra()
 {
     char opcionYN;
     cout << "A continuacion vamos a mostrar datos relevantes de los programas academicos seleccionados" << "\n"
-         << endl;
+    << endl;
     cout << "Desea Convertir los datos a un archivo CSV?(Y/N): " << endl;
     cin >> opcionYN;
     opcionYN = tolower(opcionYN);
@@ -134,7 +150,7 @@ void View::mostrarDatosExtra()
 
 void View::buscarPorPalabraClaveYFormacion()
 {
-    char opcionYN = 'y', opcionCSV;
+    char opcionYN = 'y', opcionOutput;
     string palabraClave;
     bool convertirCSV;
     int idFormacionAcademica;
@@ -148,12 +164,12 @@ void View::buscarPorPalabraClaveYFormacion()
 
         if (opcionYN == 'y')
         {
-            cout << "Deseas convertir convertir los datos del programa academico a un CSV?(Y/N): " << endl;
-            cin >> opcionCSV;
+            cout << "Deseas convertir los datos del programa academico a un CSV, TXT O JSON?: " << endl;
+            cin >> opcionOutput;
             cout << "\n";
-            opcionCSV = tolower(opcionCSV);
+            opcionOutput = tolower(opcionOutput);
 
-            if (opcionCSV == 'y')
+            if (opcionOutput == 'y')
             {
                 convertirCSV = true;
             }
