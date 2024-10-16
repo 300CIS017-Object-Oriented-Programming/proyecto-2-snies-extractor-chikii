@@ -1,4 +1,5 @@
 #include "GestorCsv.h"
+
 // FIXME: LA LECTURA DE ARCHIVOS CON GETLINE FUNCIONA HORRIBLEMENTE, NO TENEMOS IDEA DE POR QUÉ
 vector<int> GestorCsv::leerProgramasCsv(string &ruta)
 {
@@ -14,6 +15,7 @@ vector<int> GestorCsv::leerProgramasCsv(string &ruta)
         string dato;
         // Saltarse la primera linea
         getline(archivoProgramasCsv, linea);
+        cout << "Archivo programas csv: " << linea << endl;
         // Leer los programas
         while (getline(archivoProgramasCsv, linea))
         {
@@ -46,9 +48,11 @@ vector<vector<string>> GestorCsv::leerArchivoPrimera(string &rutaBase, string &a
 
         // Primera iteracion del ciclo para guardar las etiquetas
         getline(archivoPrimero, fila);
+        cout << "Archivo primero leer leerArchivoPrimera";
         vectorFila = vector<string>(39);
         streamFila = stringstream(fila);
-        columna = 0;
+
+        columna = 0; // esta columna no la conocemos en la nueva mejora porque las columnas pueden variar
         while ((getline(streamFila, dato, ';')))
         {
             vectorFila[columna] = dato;

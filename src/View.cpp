@@ -5,13 +5,13 @@ View::View()
     // NEW quitar estas variables de aquí y del constructor del SNIESController
     //  estas constantes las leerá el SNIESController del archivo de Settings.h
     //  Completar el archivo con el resto de constantes necesarias
-    string ruta1 = string("C:/SNIES_EXTRACTOR/inputs/programas.csv");
-    string ruta2 = string("C:/SNIES_EXTRACTOR/inputs/admitidos");
-    string ruta3 = string("C:/SNIES_EXTRACTOR/inputs/graduados");
-    string ruta4 = string("C:/SNIES_EXTRACTOR/inputs/inscritos");
-    string ruta5 = string("C:/SNIES_EXTRACTOR/inputs/matriculados");
-    string ruta6 = string("C:/SNIES_EXTRACTOR/inputs/matriculadosPrimerSemestre");
-    string ruta7 = string("C:/SNIES_EXTRACTOR/outputs/");
+    string ruta1 = string("C:/proyecto-2-snies-extractor-chikii/docs/inputs/programas.csv");
+    string ruta2 = string("C:/proyecto-2-snies-extractor-chikii/docs/inputs/admitidos");
+    string ruta3 = string("C:/proyecto-2-snies-extractor-chikii/docs/inputs/graduados");
+    string ruta4 = string("C:/proyecto-2-snies-extractor-chikii/docs/inputs/inscritos");
+    string ruta5 = string("C:/proyecto-2-snies-extractor-chikii/docs/inputs/matriculados");
+    string ruta6 = string("C:/proyecto-2-snies-extractor-chikii/docs/inputs/matriculadosPrimerSemestre");
+    string ruta7 = string("C:/proyecto-2-snies-extractor-chikii/docs/outputs");
     controlador = SNIESController(ruta1, ruta2, ruta3, ruta4, ruta5, ruta6, ruta7);
 }
 
@@ -27,11 +27,12 @@ bool View::mostrarPantallaBienvenido()
     cout << "Bienvenido al SNIES-Extractor!" << endl;
     cout << "=========================================" << endl;
     cout << "Recuerde que para el correcto funcionamiento del programa tuvo que haber parametrizado" << endl;
-    cout << "antes la carpeta SNIES_EXTRACTOR en el disco duro C:, con sus respectivas carpetas inputs y outputs" << endl;
-    cout << "y todos los archivo CSV del SNIES." << endl;
+    cout << "antes la carpeta SNIES_EXTRACTOR en el disco duro C:, con sus respectivas carpetas" << endl;
+    cout << "inputs y outputs y todos los archivo CSV del SNIES." << endl;
     cout << "Si ya hizo esto, escriba 'Y', de lo contrario 'N', y Enter: " << endl;
-    char userAnswer = 'Y'; // FIXME cuando se arregle el debugger
-    // cin >> userAnswer;
+
+    char userAnswer; // FIXME cuando se arregle el debugger
+    cin >> userAnswer;
     // cout << endl;
     // FIXME verificar que el usuario ingree un valor igual al esperado incluir todo dentro de un while para
     // para asegurar que el usuario ingrese un valor valido
@@ -70,7 +71,7 @@ bool View::mostrarPantallaBienvenido()
 
         i = 0;
         // Bucle para leer un valor valido del año2
-        while (!(isConvetibleToInt(ano2)))
+        while (!(isConvetibleToInt(ano2))) // si esto es un numero, entonces asume que esto puede tener forma de año
         {
             if (i == 1)
             {
