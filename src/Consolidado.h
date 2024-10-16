@@ -34,7 +34,7 @@ public:
     void setIdSexo(int);
 
     string getSexo();
-    void setSexo(string &);
+    void setSexo(const string &); // Evita pasar por referencia no constante para evitar errores
 
     int getAno();
     void setAno(int);
@@ -59,3 +59,5 @@ public:
 };
 
 #endif // CONSOLIDADO_H
+
+// calidad bien
