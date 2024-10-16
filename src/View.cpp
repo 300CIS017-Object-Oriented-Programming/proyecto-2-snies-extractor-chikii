@@ -16,7 +16,7 @@ View::View()
     }
     catch (const ios_base::failure &e)
     {
-        cerr << "Error al abrir uno de los archivos: " << e.what() << std::endl;
+        cerr << "ERROR: " << e.what() << std::endl;
         throw;
     }
 }
@@ -43,70 +43,78 @@ bool View::mostrarPantallaBienvenido()
     // para asegurar que el usuario ingrese un valor valido
     // pasarlo a un método que se pueda usar en otros lugares
     userAnswer = static_cast<char>(tolower(userAnswer));
-    if (userAnswer == 'y')
+    try
     {
-        parametrizacionBool = true;
-
-        string userText;
-        cout << "A continuacion se procesaran los datos de los programas academicos seleccionados en /programas.csv..." << endl;
-
-        string anio1("abc");
-        string ano2("abc");
-        string anoAux;
-        int i = 0;
-        bool anosValido = false;
-        // FIXME pasar la lógica del bucle a un método reutlizable
-        // Usar en el while una bandera y simplificar el código
-        // Bucle para leer un valor valido del año1
-        while (!(isConvetibleToInt(anio1)))
+        if (userAnswer == 'y')
         {
-            if (i == 1)
+            parametrizacionBool = true;
+
+            string userText;
+            cout << "A continuacion se procesaran los datos de los programas academicos seleccionados en /programas.csv..." << endl;
+
+            string anio1("abc");
+            string ano2("abc");
+            string anoAux;
+            int i = 0;
+            bool anosValido = false;
+            // FIXME pasar la lógica del bucle a un método reutlizable
+            // Usar en el while una bandera y simplificar el código
+            // Bucle para leer un valor valido del año1
+            while (!(isConvetibleToInt(anio1)))
             {
-                cout << "El valor ingresado fue invalido!" << endl;
-                cout << "Por favor ingrese un valor valido la proxima" << endl;
-                cout << "Presione 'OK' y Enter para continuar: " << endl;
-                cin >> userText;
+                if (i == 1)
+                {
+                    throw domain_error("El valor ingresado fue invalido!, Por favor ingrese un valor valido la proxima");
+                    cout << "Presione 'OK' y Enter para continuar: " << endl;
+                    cin >> userText;
+                    cout << endl;
+                }
+                cout << "Escriba el primer ano de busqueda: " << endl;
+                cin >> anio1;
                 cout << endl;
+                i = 1;
             }
-            cout << "Escriba el primer ano de busqueda: " << endl;
-            cin >> anio1;
-            cout << endl;
-            i = 1;
-        }
 
-        i = 0;
-        // Bucle para leer un valor valido del año2
-        while (!(isConvetibleToInt(ano2)))
-        {
-            if (i == 1)
+            i = 0;
+            // Bucle para leer un valor valido del año2
+            while (!(isConvetibleToInt(ano2)))
             {
-                cout << "El valor ingresado fue invalido!" << endl;
-                // throw domain_error("El valor ingresado fue invalido!");
-                cout << "Por favor ingrese un valor valido la proxima" << endl;
-                cout << "Presione 'OK' y Enter para continuar: " << endl;
-                cin >> userText;
+                if (i == 1)
+                {
+                    throw domain_error("El valor ingresado fue invalido!, Por favor ingrese un valor valido la proxima");
+                    cout << "Presione 'OK' y Enter para continuar: " << endl;
+                    cin >> userText;
+                    cout << endl;
+                }
+                cout << "Escriba el segundo ano de busqueda: " << endl;
+                cin >> ano2;
                 cout << endl;
+                i = 1;
             }
-            cout << "Escriba el segundo ano de busqueda: " << endl;
-            cin >> ano2;
-            cout << endl;
-            i = 1;
-        }
 
-        // Organizo los años
-        // FIXME: Crear un método para hacer que el segundo año sea siempre
-        // mayor que el primer año
-        if (stoi(ano2) < stoi(anio1))
-        {
-            anoAux = anio1;
-            anio1 = ano2;
-            ano2 = anoAux;
-        }
+            // Organizo los años
+            // FIXME: Crear un método para hacer que el segundo año sea siempre
+            // mayor que el primer año
+            if (stoi(ano2) < stoi(anio1))
+            {
+                anoAux = anio1;
+                anio1 = ano2;
+                ano2 = anoAux;
+            }
 
-        cout << "Procesando datos ..." << endl;
-        controlador.procesarDatosCsv(anio1, ano2);
-        cout << "Datos procesados con exito!" << endl;
+            cout << "Procesando datos ..." << endl;
+            controlador.procesarDatosCsv(anio1, ano2);
+            cout << "Datos procesados con exito!" << endl;
+        }
     }
+    catch (const ios_base::failure &e)
+    {
+        cerr << "ERROR: " << e.what() << endl;
+    } // igual pasa a lo siguiente!
+    /*else
+    {
+        throw domain_error("Opcion invalida");
+    }*/
 
     return parametrizacionBool;
 }

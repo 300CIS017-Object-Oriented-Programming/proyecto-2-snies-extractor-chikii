@@ -33,7 +33,7 @@ vector<vector<string>> GestorCsv::leerArchivoPrimera(string &rutaBase, string &a
     ifstream archivoPrimero(rutaCompleta);
     if (!(archivoPrimero.is_open()))
     {
-        cout << "Archivo " << rutaCompleta << " no se pudo abrir correctamente" << endl;
+        throw ios_base::failure("Archivo " + rutaCompleta + " no se pudo abrir correctamente");
     }
     else
     {
