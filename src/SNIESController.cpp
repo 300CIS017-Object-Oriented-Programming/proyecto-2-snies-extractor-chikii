@@ -30,12 +30,22 @@ void SNIESController::procesarDatosCsv(string &ano1, string &ano2)
     vector<vector<string>> programasAcademicosVector;
     int posicion;
     int columna;
-    // cout << "antes leer programas csv" << endl;
-    codigosSnies = gestorCsvObj.leerProgramasCsv(rutaProgramasCSV);
-    // cout << "despues leer programas csv" << endl;
-    programasAcademicosVector = gestorCsvObj.leerArchivoPrimera(rutaAdmitidos, ano1, codigosSnies);
-    // cout << "despues leer archivos Primera" << endl;
-    etiquetasColumnas = programasAcademicosVector[0];
+
+    /*
+    try
+    {
+        // cout << "antes leer programas csv" << endl;
+        codigosSnies = gestorCsvObj.leerProgramasCsv(rutaProgramasCSV);
+        // cout << "despues leer programas csv" << endl;
+        programasAcademicosVector = gestorCsvObj.leerArchivoPrimera(rutaAdmitidos, ano1, codigosSnies);
+        // cout << "despues leer archivos Primera" << endl;
+        etiquetasColumnas = programasAcademicosVector[0];
+    }
+    catch (const ios_base::failure &e)
+    {
+        cerr << "ERROR: " << e.what() << endl;
+    }
+    */
 
     for (int i = 1; i < programasAcademicosVector.size(); i += 4)
     {
@@ -258,6 +268,10 @@ void SNIESController::procesarDatosCsv(string &ano1, string &ano2)
     bool archivoCreado;
     archivoCreado = gestorCsvObj.crearArchivo(rutaOutput, programasAcademicos, etiquetasColumnas);
     // cout << archivoCreado << endl;
+    /*catch (const ios_base::failure &e)
+    {
+        cerr << "ERROR: " << e.what() << endl;
+    }*/
 }
 
 void SNIESController::buscarProgramas(bool flag, string &palabraClave, int idComparacion)
