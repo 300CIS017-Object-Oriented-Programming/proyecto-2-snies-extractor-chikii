@@ -8,6 +8,8 @@ Verificar las columnas que necesito asumiendo que siempre van a variar
 tener una variable que guarde el numero de columna que corresponde a esa informacion
 
 
+NUEVA RAMA ACTUALIZADA POR ERROR DE ENCABEZADO
+
 
 
 */
