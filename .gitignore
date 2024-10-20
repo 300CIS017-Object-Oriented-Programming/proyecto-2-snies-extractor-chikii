@@ -36,4 +36,3 @@ build/
 .vscode/
 .idea/
 CMakeCache.txt
-docs/

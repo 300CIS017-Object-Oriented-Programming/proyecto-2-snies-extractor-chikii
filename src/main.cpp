@@ -1,14 +1,27 @@
 #include "View.h"
 
+#include <iostream>
+#include <stdexcept>
+
 int main()
 {
-    View menu;
-    bool archivosParametrizados = menu.mostrarPantallaBienvenido();
-    if (archivosParametrizados)
+    try
     {
-        menu.mostrarDatosExtra();
-        menu.buscarPorPalabraClaveYFormacion();
+        View menu;
+        bool archivosParametrizados = menu.mostrarPantallaBienvenido();
+
+        if (archivosParametrizados)
+        {
+            menu.mostrarDatosExtra();
+            menu.buscarPorPalabraClaveYFormacion();
+        }
+
+        menu.salir();
     }
-    menu.salir();
+    catch (const domain_error &e)
+    {
+        cerr << "ERROR: " << e.what() << endl;
+    }
+
     return 0;
 }
