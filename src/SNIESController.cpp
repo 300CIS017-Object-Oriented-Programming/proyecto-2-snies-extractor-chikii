@@ -42,6 +42,7 @@ void SNIESController::procesarDatosCsv(string &ano1, string &ano2)
     vector<vector<string>> programasAcademicosVector;
     int posicion;
     int columna;
+  // Cambios realizados por el issue: 3-funcionamiento-de-rango-de-anios-en-proyecto
     int a, b, c, d, e, f, g, h, ii, j, k, l, m, n, o, p, q, r, s, t, u, v, x, y, z, ab, ac, ad, ae, af, ag, ah, ai, aj, ak, al, am, an, ao, ap, aq, ar;
     vector<int> posicionColumnas;
     // cout << "antes leer programas csv" << endl;
@@ -50,7 +51,24 @@ void SNIESController::procesarDatosCsv(string &ano1, string &ano2)
     programasAcademicosVector = gestorCsvObj.leerArchivoPrimera(rutaAdmitidos, ano1, codigosSnies);
     // cout << "Esta es la ruta de admitidos " << rutaAdmitidos << endl;
     //  cout << "despues leer archivos Primera" << endl;
-    etiquetasColumnas = programasAcademicosVector[0];
+    etiquetasColumnas = programasAcademicosVector[0]; // Esta linea recibe todas las etiquetas para luego procesarlas una a una
+  // *** FIN DE CAMBIO ***
+    /*
+    try
+    {
+        // cout << "antes leer programas csv" << endl;
+        codigosSnies = gestorCsvObj.leerProgramasCsv(rutaProgramasCSV);
+        // cout << "despues leer programas csv" << endl;
+        programasAcademicosVector = gestorCsvObj.leerArchivoPrimera(rutaAdmitidos, ano1, codigosSnies);
+        // cout << "despues leer archivos Primera" << endl;
+        etiquetasColumnas = programasAcademicosVector[0];
+    }
+    catch (const ios_base::failure &e)
+    {
+        cerr << "ERROR: " << e.what() << endl;
+    }
+    */
+
 
     for (int i = 0; i < etiquetasColumnas.size(); i++)
     {
@@ -451,6 +469,10 @@ void SNIESController::procesarDatosCsv(string &ano1, string &ano2)
     bool archivoCreado;
     archivoCreado = gestorCsvObj.crearArchivo(rutaOutput, programasAcademicos, etiquetasColumnas);
     // cout << archivoCreado << endl;
+    /*catch (const ios_base::failure &e)
+    {
+        cerr << "ERROR: " << e.what() << endl;
+    }*/
 }
 
 void SNIESController::buscarProgramas(bool flag, string &palabraClave, int idComparacion)
@@ -584,7 +606,7 @@ void SNIESController::calcularDatosExtra(bool flag)
         if ((SumaNeosPrimerSemestre == 0 && SumaNeosSegundoSemestre == 0 && SumaNeosTercerSemestre == 0) || (SumaNeosSegundoSemestre == 0 && SumaNeosTercerSemestre == 0 && SumaNeosCuartoSemestre == 0))
         {
             etiquetas3 = {to_string(programa->getCodigoSniesDelPrograma()),
-                          programa->getProgramaAcademico()};
+                            programa->getProgramaAcademico()};
         }
     }
     etiquetas1 = {to_string(sumaPrimerAno), to_string(sumaSegundoAno)};
