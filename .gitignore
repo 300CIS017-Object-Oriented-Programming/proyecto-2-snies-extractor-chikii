@@ -36,7 +36,3 @@ build/
 .vscode/
 .idea/
 CMakeCache.txt
-
-docs/outputsbuscados.csv
-docs/outputsextras.csv
-docs/outputsresultados.csv
