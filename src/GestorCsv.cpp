@@ -1,15 +1,14 @@
 #include "GestorCsv.h"
-
 // FIXME: LA LECTURA DE ARCHIVOS CON GETLINE FUNCIONA HORRIBLEMENTE, NO TENEMOS IDEA DE POR QUÉ
-int tres = 3;
-int treinataYnueve = 39;
-int trece = 13;
-int doce = 12;
-int cero = 0;
-int treintaYcuatro = 34;
-int dos = 2;
-int seis = 6;
-int ocho = 8;
+int tres=3;
+int treinataYnueve=39;
+int trece=13;
+int doce=12;
+int cero=0;
+int treintaYcuatro=34;
+int dos=2;
+int seis=6;
+int ocho=8;
 
 vector<int> GestorCsv::leerProgramasCsv(string &ruta)
 {
@@ -25,11 +24,9 @@ vector<int> GestorCsv::leerProgramasCsv(string &ruta)
         string dato;
         // Saltarse la primera linea
         getline(archivoProgramasCsv, linea);
-        // cout << "Archivo programas csv: " << linea << endl; // comment FIX
         // Leer los programas
         while (getline(archivoProgramasCsv, linea))
         {
-            cout << linea << endl;
             stringstream streamLinea(linea);
             getline(streamLinea, dato, ';');
             codigosSniesRetorno.push_back(stoi(dato));
@@ -59,20 +56,16 @@ vector<vector<string>> GestorCsv::leerArchivoPrimera(string &rutaBase, string &a
 
         // Primera iteracion del ciclo para guardar las etiquetas
         getline(archivoPrimero, fila);
+        vectorFila = vector<string>(treinataYnueve);
         streamFila = stringstream(fila);
-        bool flag = false;
+        columna = 0;
         while ((getline(streamFila, dato, ';')))
         {
-            if (!dato.empty())
-            {
-                vectorFila.push_back(dato);
-            }
-            else
-            {
-                vectorFila.push_back("empty");
-            }
+            vectorFila[columna] = dato;
+            columna++;
         }
         matrizResultado.push_back(vectorFila);
+
         // Leer el resto del archivo
         while (getline(archivoPrimero, fila))
         {
@@ -125,7 +118,6 @@ vector<vector<string>> GestorCsv::leerArchivoPrimera(string &rutaBase, string &a
         }
     }
 
-    cout << "COMPLETADA LA ACCION" << endl;
     archivoPrimero.close();
 
     /*// Imprimir matriz resultado para verificaciones

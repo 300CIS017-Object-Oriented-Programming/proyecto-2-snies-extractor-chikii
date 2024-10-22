@@ -1,18 +1,6 @@
 #include "SNIESController.h"
 
-/*
-Anotaciones para resolver issue #3
-Acceder a la informacion necesaria sin importar la variacion de columnas
-
-Verificar las columnas que necesito asumiendo que siempre van a variar
-tener una variable que guarde el numero de columna que corresponde a esa informacion
-
-
-NUEVA RAMA ACTUALIZADA POR ERROR DE ENCABEZADO
-
-
-
-*/
+using namespace std;
 
 SNIESController::SNIESController(string &nuevaRutaProgramasCSV, string &nuevaRutaAdmitidos, string &nuevaRutaGraduados, string &nuevaRutaInscritos, string &nuevaRutaMatriculadosc, string &nuevaRutaMatriculadosPrimerSemestre, string &nuevaRutaOutput)
 {
@@ -42,17 +30,7 @@ void SNIESController::procesarDatosCsv(string &ano1, string &ano2)
     vector<vector<string>> programasAcademicosVector;
     int posicion;
     int columna;
-  // Cambios realizados por el issue: 3-funcionamiento-de-rango-de-anios-en-proyecto
-    int a, b, c, d, e, f, g, h, ii, j, k, l, m, n, o, p, q, r, s, t, u, v, x, y, z, ab, ac, ad, ae, af, ag, ah, ai, aj, ak, al, am, an, ao, ap, aq, ar;
-    vector<int> posicionColumnas;
-    // cout << "antes leer programas csv" << endl;
-    codigosSnies = gestorCsvObj.leerProgramasCsv(rutaProgramasCSV);
-    // cout << "despues leer programas csv" << endl;
-    programasAcademicosVector = gestorCsvObj.leerArchivoPrimera(rutaAdmitidos, ano1, codigosSnies);
-    // cout << "Esta es la ruta de admitidos " << rutaAdmitidos << endl;
-    //  cout << "despues leer archivos Primera" << endl;
-    etiquetasColumnas = programasAcademicosVector[0]; // Esta linea recibe todas las etiquetas para luego procesarlas una a una
-  // *** FIN DE CAMBIO ***
+
     /*
     try
     {
@@ -69,231 +47,52 @@ void SNIESController::procesarDatosCsv(string &ano1, string &ano2)
     }
     */
 
-
-    for (int i = 0; i < etiquetasColumnas.size(); i++)
-    {
-        if (etiquetasColumnas[i] == "CÓDIGO DE LA INSTITUCIÓN")
-        {
-            a = i;
-        }
-        else if (etiquetasColumnas[i] == "IES_PADRE")
-        {
-            b = i;
-        }
-        else if (etiquetasColumnas[i] == "INSTITUCIÓN DE EDUCACIÓN SUPERIOR (IES)")
-        {
-            ar = i;
-        }
-        else if (etiquetasColumnas[i] == "PRINCIPAL O SECCIONAL")
-        {
-            c = i;
-        }
-        else if (etiquetasColumnas[i] == "ID SECTOR IES")
-        {
-            d = i;
-        }
-
-        else if (etiquetasColumnas[i] == "SECTOR IES")
-        {
-            e = i;
-        }
-        else if (etiquetasColumnas[i] == "ID CARACTER")
-        {
-            f = i;
-        }
-        else if (etiquetasColumnas[i] == "CARACTER IES")
-        {
-            g = i;
-        }
-        else if (etiquetasColumnas[i] == "CÓDIGO DEL DEPARTAMENTO (IES)")
-        {
-            h = i;
-        }
-        else if (etiquetasColumnas[i] == "DEPARTAMENTO DE DOMICILIO DE LA IES")
-        {
-            ii = i;
-        }
-        else if (etiquetasColumnas[i] == "CÓDIGO DEL MUNICIPIO IES")
-        {
-            j = i;
-        }
-        else if (etiquetasColumnas[i] == "MUNICIPIO DE DOMICILIO DE LA IES")
-        {
-            k = i;
-        }
-        else if (etiquetasColumnas[i] == "CÓDIGO SNIES DEL PROGRAMA")
-        {
-            l = i;
-        }
-        else if (etiquetasColumnas[i] == "PROGRAMA ACADÉMICO")
-        {
-            m = i;
-        }
-        else if (etiquetasColumnas[i] == "ID NIVEL ACADÉMICO")
-        {
-            n = i;
-        }
-        else if (etiquetasColumnas[i] == "NIVEL ACADÉMICO")
-        {
-            o = i;
-        }
-        else if (etiquetasColumnas[i] == "ID NIVEL DE FORMACIÓN")
-        {
-            p = i;
-        }
-        else if (etiquetasColumnas[i] == "NIVEL DE FORMACIÓN")
-        {
-            q = i;
-        }
-        else if (etiquetasColumnas[i] == "ID METODOLOGÍA")
-        {
-            r = i;
-        }
-        else if (etiquetasColumnas[i] == "METODOLOGÍA")
-        {
-            s = i;
-        }
-        else if (etiquetasColumnas[i] == "ID ÁREA")
-        {
-            t = i;
-        }
-        else if (etiquetasColumnas[i] == "ÁREA DE CONOCIMIENTO")
-        {
-            u = i;
-        }
-        else if (etiquetasColumnas[i] == "ID NÚCLEO")
-        {
-            v = i;
-        }
-        else if (etiquetasColumnas[i] == "NÚCLEO BÁSICO DEL CONOCIMIENTO (NBC)")
-        {
-            x = i;
-        }
-        else if (etiquetasColumnas[i] == "ID CINE CAMPO AMPLIO")
-        {
-            y = i;
-        }
-        else if (etiquetasColumnas[i] == "DESC CINE CAMPO AMPLIO")
-        {
-            z = i;
-        }
-        else if (etiquetasColumnas[i] == "ID CINE CAMPO ESPECIFICO")
-        {
-            ab = i;
-        }
-        else if (etiquetasColumnas[i] == "DESC CINE CAMPO ESPECIFICO")
-        {
-            ac = i;
-        }
-        else if (etiquetasColumnas[i] == "ID CINE CODIGO DETALLADO")
-        {
-            ad = i;
-        }
-        else if (etiquetasColumnas[i] == "DESC CINE CODIGO DETALLADO")
-        {
-            ae = i;
-        }
-        else if (etiquetasColumnas[i] == "CÓDIGO DEL DEPARTAMENTO (PROGRAMA)")
-        {
-            af = i;
-        }
-        else if (etiquetasColumnas[i] == "DEPARTAMENTO DE OFERTA DEL PROGRAMA")
-        {
-            ag = i;
-        }
-        else if (etiquetasColumnas[i] == "CÓDIGO DEL MUNICIPIO (PROGRAMA)")
-        {
-            ah = i;
-        }
-        else if (etiquetasColumnas[i] == "MUNICIPIO DE OFERTA DEL PROGRAMA")
-        {
-            ai = i;
-        }
-        else if (etiquetasColumnas[i] == "ID SEXO")
-        {
-            aj = i;
-        }
-        else if (etiquetasColumnas[i] == "SEXO")
-        {
-            ak = i;
-        }
-        else if (etiquetasColumnas[i] == "AÑO")
-        {
-            al = i;
-        }
-        else if (etiquetasColumnas[i] == "SEMESTRE")
-        {
-            am = i;
-        }
-        else if (etiquetasColumnas[i] == "ADMITIDOS")
-        {
-            an = i;
-        }
-        else if (etiquetasColumnas[i] == "ID ÁREA")
-        {
-            ao = i;
-        }
-        else if (etiquetasColumnas[i] == "ID ÁREA")
-        {
-            ap = i;
-        }
-        else if (etiquetasColumnas[i] == "ID ÁREA")
-        {
-            aq = i;
-        }
-    }
-
-    // vamos a hacer el ciclo para hallar las etiquetas
-
     for (int i = 1; i < programasAcademicosVector.size(); i += 4)
     {
-        // aca es donde el valor de la columna tenemos que encontrarla para cada etiqueta asumiendo que es variable
         ProgramaAcademico *programaAcademico = new ProgramaAcademico();
-        programaAcademico->setCodigoDeLaInstitucion(stoi(programasAcademicosVector[i][a]));          // CÓDIGO DE LA INSTITUCIÓN
-        programaAcademico->setIesPadre(stoi(programasAcademicosVector[i][b]));                       // IES_PADRE
-        programaAcademico->setInstitucionDeEducacionSuperiorIes(programasAcademicosVector[i][ar]);   // INSTITUCIÓN DE EDUCACIÓN SUPERIOR (IES)
-        programaAcademico->setPrincipalOSeccional(programasAcademicosVector[i][c]);                  // PRINCIPAL O SECCIONAL
-        programaAcademico->setIdSectorIes(stoi(programasAcademicosVector[i][d]));                    // ID SECTOR IES
-        programaAcademico->setSectorIes(programasAcademicosVector[i][e]);                            // SECTOR IES
-        programaAcademico->setIdCaracter(stoi(programasAcademicosVector[i][f]));                     // ID CARÁCTER
-        programaAcademico->setCaracterIes(programasAcademicosVector[i][g]);                          // CARACTER IES
-        programaAcademico->setCodigoDelDepartamentoIes(stoi(programasAcademicosVector[i][h]));       // CÓDIGO DEL DEPARTAMENTO (IES)
-        programaAcademico->setDepartamentoDeDomicilioDeLaIes(programasAcademicosVector[i][ii]);      // DEPARTAMENTO DE DOMICILIO DE LA IES
-        programaAcademico->setCodigoDelMunicipioIes(stoi(programasAcademicosVector[i][j]));          // CÓDIGO DEL MUNICIPIO IES
-        programaAcademico->setMunicipioDeDomicilioDeLaIes(programasAcademicosVector[i][k]);          // MUNICIPIO DE DOMICILIO DE LA IES
-        programaAcademico->setCodigoSniesDelPrograma(stoi(programasAcademicosVector[i][l]));         // CÓDIGO SNIES DEL PROGRAMA
-        programaAcademico->setProgramaAcademico(programasAcademicosVector[i][m]);                    // PROGRAMA ACADÉMICO
-        programaAcademico->setIdNivelAcademico(stoi(programasAcademicosVector[i][n]));               // ID NIVEL ACADÉMICO
-        programaAcademico->setNivelAcademico(programasAcademicosVector[i][o]);                       // NIVEL ACADÉMICO
-        programaAcademico->setIdNivelDeFormacion(stoi(programasAcademicosVector[i][p]));             // ID NIVEL DE FORMACIÓN
-        programaAcademico->setNivelDeFormacion(programasAcademicosVector[i][q]);                     // NIVEL DE FORMACIÓN
-        programaAcademico->setIdMetodologia(stoi(programasAcademicosVector[i][r]));                  // ID METODOLOGÍA
-        programaAcademico->setMetodologia(programasAcademicosVector[i][s]);                          // METODOLOGÍA
-        programaAcademico->setIdArea(stoi(programasAcademicosVector[i][t]));                         // ID ÁREA
-        programaAcademico->setAreaDeConocimiento(programasAcademicosVector[i][u]);                   // ÁREA DE CONOCIMIENTO
-        programaAcademico->setIdNucleo(stoi(programasAcademicosVector[i][v]));                       // ID NÚCLEO
-        programaAcademico->setNucleoBasicoDelConocimientoNbc(programasAcademicosVector[i][x]);       // NÚCLEO BÁSICO DEL CONOCIMIENTO (NBC)
-        programaAcademico->setIdCineCampoAmplio(stoi(programasAcademicosVector[i][y]));              // ID CINE CAMPO AMPLIO
-        programaAcademico->setDescCineCampoAmplio(programasAcademicosVector[i][z]);                  // DESC CINE CAMPO AMPLIO
-        programaAcademico->setIdCineCampoEspecifico(stoi(programasAcademicosVector[i][ab]));         // ID CINE CAMPO ESPECÍFICO
-        programaAcademico->setDescCineCampoEspecifico(programasAcademicosVector[i][ac]);             // DESC CINE CAMPO ESPECÍFICO
-        programaAcademico->setIdCineCodigoDetallado(stoi(programasAcademicosVector[i][ad]));         // ID CINE CÓDIGO DETALLADO
-        programaAcademico->setDescCineCodigoDetallado(programasAcademicosVector[i][ae]);             // DESC CINE CÓDIGO DETALLADO
-        programaAcademico->setCodigoDelDepartamentoPrograma(stoi(programasAcademicosVector[i][af])); // CÓDIGO DEL DEPARTAMENTO (PROGRAMA)
-        programaAcademico->setDepartamentoDeOfertaDelPrograma(programasAcademicosVector[i][ag]);     // DEPARTAMENTO DE OFERTA DEL PROGRAMA
-        programaAcademico->setCodigoDelMunicipioPrograma(stoi(programasAcademicosVector[i][ah]));    // CÓDIGO DEL MUNICIPIO (PROGRAMA)
-        programaAcademico->setMunicipioDeOfertaDelPrograma(programasAcademicosVector[i][ai]);        // MUNICIPIO DE OFERTA DEL PROGRAMA
+        programaAcademico->setCodigoDeLaInstitucion(stoi(programasAcademicosVector[i][0]));          // CÓDIGO DE LA INSTITUCIÓN
+        programaAcademico->setIesPadre(stoi(programasAcademicosVector[i][1]));                       // IES_PADRE
+        programaAcademico->setInstitucionDeEducacionSuperiorIes(programasAcademicosVector[i][2]);    // INSTITUCIÓN DE EDUCACIÓN SUPERIOR (IES)
+        programaAcademico->setPrincipalOSeccional(programasAcademicosVector[i][3]);                  // PRINCIPAL O SECCIONAL
+        programaAcademico->setIdSectorIes(stoi(programasAcademicosVector[i][4]));                    // ID SECTOR IES
+        programaAcademico->setSectorIes(programasAcademicosVector[i][5]);                            // SECTOR IES
+        programaAcademico->setIdCaracter(stoi(programasAcademicosVector[i][6]));                     // ID CARÁCTER
+        programaAcademico->setCaracterIes(programasAcademicosVector[i][7]);                          // CARACTER IES
+        programaAcademico->setCodigoDelDepartamentoIes(stoi(programasAcademicosVector[i][8]));       // CÓDIGO DEL DEPARTAMENTO (IES)
+        programaAcademico->setDepartamentoDeDomicilioDeLaIes(programasAcademicosVector[i][9]);       // DEPARTAMENTO DE DOMICILIO DE LA IES
+        programaAcademico->setCodigoDelMunicipioIes(stoi(programasAcademicosVector[i][10]));         // CÓDIGO DEL MUNICIPIO IES
+        programaAcademico->setMunicipioDeDomicilioDeLaIes(programasAcademicosVector[i][11]);         // MUNICIPIO DE DOMICILIO DE LA IES
+        programaAcademico->setCodigoSniesDelPrograma(stoi(programasAcademicosVector[i][12]));        // CÓDIGO SNIES DEL PROGRAMA
+        programaAcademico->setProgramaAcademico(programasAcademicosVector[i][13]);                   // PROGRAMA ACADÉMICO
+        programaAcademico->setIdNivelAcademico(stoi(programasAcademicosVector[i][14]));              // ID NIVEL ACADÉMICO
+        programaAcademico->setNivelAcademico(programasAcademicosVector[i][15]);                      // NIVEL ACADÉMICO
+        programaAcademico->setIdNivelDeFormacion(stoi(programasAcademicosVector[i][16]));            // ID NIVEL DE FORMACIÓN
+        programaAcademico->setNivelDeFormacion(programasAcademicosVector[i][17]);                    // NIVEL DE FORMACIÓN
+        programaAcademico->setIdMetodologia(stoi(programasAcademicosVector[i][18]));                 // ID METODOLOGÍA
+        programaAcademico->setMetodologia(programasAcademicosVector[i][19]);                         // METODOLOGÍA
+        programaAcademico->setIdArea(stoi(programasAcademicosVector[i][20]));                        // ID ÁREA
+        programaAcademico->setAreaDeConocimiento(programasAcademicosVector[i][21]);                  // ÁREA DE CONOCIMIENTO
+        programaAcademico->setIdNucleo(stoi(programasAcademicosVector[i][22]));                      // ID NÚCLEO
+        programaAcademico->setNucleoBasicoDelConocimientoNbc(programasAcademicosVector[i][23]);      // NÚCLEO BÁSICO DEL CONOCIMIENTO (NBC)
+        programaAcademico->setIdCineCampoAmplio(stoi(programasAcademicosVector[i][24]));             // ID CINE CAMPO AMPLIO
+        programaAcademico->setDescCineCampoAmplio(programasAcademicosVector[i][25]);                 // DESC CINE CAMPO AMPLIO
+        programaAcademico->setIdCineCampoEspecifico(stoi(programasAcademicosVector[i][26]));         // ID CINE CAMPO ESPECÍFICO
+        programaAcademico->setDescCineCampoEspecifico(programasAcademicosVector[i][27]);             // DESC CINE CAMPO ESPECÍFICO
+        programaAcademico->setIdCineCodigoDetallado(stoi(programasAcademicosVector[i][28]));         // ID CINE CÓDIGO DETALLADO
+        programaAcademico->setDescCineCodigoDetallado(programasAcademicosVector[i][29]);             // DESC CINE CÓDIGO DETALLADO
+        programaAcademico->setCodigoDelDepartamentoPrograma(stoi(programasAcademicosVector[i][30])); // CÓDIGO DEL DEPARTAMENTO (PROGRAMA)
+        programaAcademico->setDepartamentoDeOfertaDelPrograma(programasAcademicosVector[i][31]);     // DEPARTAMENTO DE OFERTA DEL PROGRAMA
+        programaAcademico->setCodigoDelMunicipioPrograma(stoi(programasAcademicosVector[i][32]));    // CÓDIGO DEL MUNICIPIO (PROGRAMA)
+        programaAcademico->setMunicipioDeOfertaDelPrograma(programasAcademicosVector[i][33]);        // MUNICIPIO DE OFERTA DEL PROGRAMA
         Consolidado *consolidado[4];
-        // falta corregir las columnas
         for (int m = 0; m < 4; ++m)
         {
-
             consolidado[m] = new Consolidado();
-            consolidado[m]->setIdSexo(stoi(programasAcademicosVector[i + m][aj]));
-            consolidado[m]->setSexo(programasAcademicosVector[i + m][ak]);
-            consolidado[m]->setAno(stoi(programasAcademicosVector[i + m][al]));
-            consolidado[m]->setSemestre(stoi(programasAcademicosVector[i + m][am]));
-            consolidado[m]->setAdmitidos(stoi(programasAcademicosVector[i + m][an]));
+            consolidado[m]->setIdSexo(stoi(programasAcademicosVector[i + m][34]));
+            consolidado[m]->setSexo(programasAcademicosVector[i + m][35]);
+            consolidado[m]->setAno(stoi(programasAcademicosVector[i + m][36]));
+            consolidado[m]->setSemestre(stoi(programasAcademicosVector[i + m][37]));
+            consolidado[m]->setAdmitidos(stoi(programasAcademicosVector[i + m][38]));
             programaAcademico->setConsolidado(consolidado[m], m);
         }
         programasAcademicos.emplace(programaAcademico->getCodigoSniesDelPrograma(), programaAcademico);

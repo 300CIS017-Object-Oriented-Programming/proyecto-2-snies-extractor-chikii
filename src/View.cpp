@@ -2,7 +2,6 @@
 
 View::View()
 {
-
     try
     {
         string ruta1 = string("C:/proyecto-2-snies-extractor-chikii/docs/inputs/programas.csv");
@@ -20,7 +19,6 @@ View::View()
         cerr << "ERROR: " << e.what() << std::endl;
         throw;
     }
-
 }
 
 View::~View()
@@ -35,12 +33,11 @@ bool View::mostrarPantallaBienvenido()
     cout << "Bienvenido al SNIES-Extractor!" << endl;
     cout << "=========================================" << endl;
     cout << "Recuerde que para el correcto funcionamiento del programa tuvo que haber parametrizado" << endl;
-    cout << "antes la carpeta SNIES_EXTRACTOR en el disco duro C:, con sus respectivas carpetas" << endl;
-    cout << "inputs y outputs y todos los archivo CSV del SNIES." << endl;
+    cout << "antes la carpeta SNIES_EXTRACTOR en el disco duro C:, con sus respectivas carpetas inputs y outputs" << endl;
+    cout << "y todos los archivo CSV del SNIES." << endl;
     cout << "Si ya hizo esto, escriba 'Y', de lo contrario 'N', y Enter: " << endl;
-
-    char userAnswer; // FIXME cuando se arregle el debugger
-    cin >> userAnswer;
+    char userAnswer = 'Y'; // FIXME cuando se arregle el debugger
+    // cin >> userAnswer;
     // cout << endl;
     // FIXME verificar que el usuario ingree un valor igual al esperado incluir todo dentro de un while para
     // para asegurar que el usuario ingrese un valor valido
@@ -78,9 +75,9 @@ bool View::mostrarPantallaBienvenido()
                 i = 1;
             }
 
-        i = 0;
-        // Bucle para leer un valor valido del año2
-        while (!(isConvetibleToInt(ano2))) // si esto es un numero, entonces asume que esto puede tener forma de año
+            i = 0;
+            // Bucle para leer un valor valido del año2
+            while (!(isConvetibleToInt(ano2)))
             {
                 if (i == 1)
                 {
