@@ -104,23 +104,56 @@ void View::salir()
 
 void View::mostrarDatosExtra()
 {
-    char opcionYN;
-    cout << "A continuacion vamos a mostrar datos relevantes de los programas academicos seleccionados" << endl;
-    // cout << endl;
-    cout << "Desea Convertir los datos a un archivo CSV?(Y/N): " << endl;
-    cin >> opcionYN;
-    opcionYN = tolower(opcionYN);
-    cout << "\n";
-    // FIXME verificar que el usuario ingrese un valor igual al esperado, return true si es Y, false si es N, y no sale si no retorna un valor válido
-    // Simplificar el código de acuerdo a ese ajuste
-    if (opcionYN == 'y')
+    try
     {
-        controlador.calcularDatosExtra(true);
-    }
+        int opcionYN;
+        cout << "A continuacion vamos a mostrar datos relevantes de los programas academicos seleccionados" << endl;
+        cout << "¿Como desea visualizar los resultados de busqueda?" << endl;
+        cout << "1) CSV" << endl;
+        cout << "2) TXT" << endl;
+        cout << "3) JSON" << endl;
+        cout << "4) No deseo visualizarlo" << endl;
 
-    else
+        if (!(cin >> opcionYN))
+        {
+            throw invalid_argument("Entrada no valida. Debe ingresar un numero entre 1 y 4.");
+        }
+
+        cout << "\n";
+        switch (opcionYN)
+        {
+        case 1: // CSV
+            cout << "Creando archivo CSV..." << endl;
+            controlador.calcularDatosExtra(true);
+            break;
+        case 2: // TXT
+            cout << "Creando archivo TXT..." << endl;
+            //
+            break;
+        case 3: // JSON
+            cout << "Creando archivo JSON..." << endl;
+            //
+            break;
+        case 4: // Ninguna
+            cout << "No se ha creado ningun archivo." << endl;
+            controlador.calcularDatosExtra(false);
+            break;
+        default: // Manejar entradas fuera del rango esperado
+            throw out_of_range("Opcion invalida. Debe ingresar un valor entre 1 y 4.");
+        }
+    }
+    catch (const invalid_argument &e)
     {
-        controlador.calcularDatosExtra(false);
+        cerr << "ERROR: " << e.what() << endl;
+        cin.clear();
+    }
+    catch (const out_of_range &e)
+    {
+        cerr << "ERROR: " << e.what() << endl;
+    }
+    catch (const ios_base::failure &e)
+    {
+        cerr << "Error de entrada/salida: " << e.what() << endl;
     }
 }
 
