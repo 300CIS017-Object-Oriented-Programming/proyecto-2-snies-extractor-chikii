@@ -20,7 +20,6 @@ View::View()
         cerr << "ERROR: " << e.what() << std::endl;
         throw;
     }
-
 }
 
 View::~View()
@@ -28,112 +27,86 @@ View::~View()
     controlador.~SNIESController();
 }
 
+void View::revisionAnios(string anio1)
+{
+    if (anio1 < "2021")
+    {
+        throw domain_error("El ano no se encuentra registrado, intente de nuevo.");
+    }
+
+    int ano1 = stoi(anio1);
+    int anioConsecutivo = ano1 + 1;
+
+    // Verificamos que el año consecutivo no exceda el año permitido
+    if (anioConsecutivo > 2024)
+    {
+        throw domain_error("El segundo ano no se encuentra registrado, intente de nuevo.");
+    }
+
+    cout << "Ano Consecutivo: " << anioConsecutivo << endl;
+
+    string anioConsecutivoStr = to_string(anioConsecutivo);
+    cout << "Procesando datos ..." << endl;
+
+    // Procesamos los datos con el controlador
+    controlador.procesarDatosCsv(anio1, anioConsecutivoStr);
+
+    cout << "Datos procesados con exito!" << endl;
+}
+
 bool View::mostrarPantallaBienvenido()
 {
     bool parametrizacionBool = false;
+    bool inputValido = false;
 
-    cout << "Bienvenido al SNIES-Extractor!" << endl;
-    cout << "=========================================" << endl;
-    cout << "Recuerde que para el correcto funcionamiento del programa tuvo que haber parametrizado" << endl;
-    cout << "antes la carpeta SNIES_EXTRACTOR en el disco duro C:, con sus respectivas carpetas" << endl;
-    cout << "inputs y outputs y todos los archivo CSV del SNIES." << endl;
-    cout << "Si ya hizo esto, escriba 'Y', de lo contrario 'N', y Enter: " << endl;
+    cout << endl;
+    cout << " -------------- SNIES-Extractor --------------------" << endl;
+    cout << endl;
+    cout << "NOTA: Para el funcionamiento correcto del programa tuvo que haber parametrizado" << endl;
+    cout << "la carpeta SNIES_EXTRACTOR en el disco duro, incluyendo los archivos CSV del SNIES." << endl;
 
-    char userAnswer; // FIXME cuando se arregle el debugger
-    cin >> userAnswer;
-    // cout << endl;
-    // FIXME verificar que el usuario ingree un valor igual al esperado incluir todo dentro de un while para
-    // para asegurar que el usuario ingrese un valor valido
-    // pasarlo a un método que se pueda usar en otros lugares
-    userAnswer = static_cast<char>(tolower(userAnswer));
-    try
+    while (!inputValido)
     {
-        if (userAnswer == 'y')
+        try
         {
+            // Solicitamos el año de busqueda
+            string anio1;
+            cout << "Escriba el primer ano de busqueda: " << endl;
+            cin >> anio1;
+            cout << endl;
+
+            // Intentamos validar los años ingresados
+            revisionAnios(anio1);
+
+            // Si llegamos aqui sin excepciones, la parametrizacion es correcta
+            inputValido = true;
             parametrizacionBool = true;
+        }
 
-            string userText;
-            cout << "A continuacion se procesaran los datos de los programas academicos seleccionados en /programas.csv..." << endl;
-
-            string anio1("abc");
-            string ano2("abc");
-            string anoAux;
-            int i = 0;
-            bool anosValido = false;
-            // FIXME pasar la lógica del bucle a un método reutlizable
-            // Usar en el while una bandera y simplificar el código
-            // Bucle para leer un valor valido del año1
-            while (!(isConvetibleToInt(anio1)))
-            {
-                if (i == 1)
-                {
-                    throw domain_error("El valor ingresado fue invalido!, Por favor ingrese un valor valido la proxima");
-                    cout << "Presione 'OK' y Enter para continuar: " << endl;
-                    cin >> userText;
-                    cout << endl;
-                }
-                cout << "Escriba el primer ano de busqueda: " << endl;
-                cin >> anio1;
-                cout << endl;
-                i = 1;
-            }
-
-        i = 0;
-        // Bucle para leer un valor valido del año2
-        while (!(isConvetibleToInt(ano2))) // si esto es un numero, entonces asume que esto puede tener forma de año
-            {
-                if (i == 1)
-                {
-                    throw domain_error("El valor ingresado fue invalido!, Por favor ingrese un valor valido la proxima");
-                    cout << "Presione 'OK' y Enter para continuar: " << endl;
-                    cin >> userText;
-                    cout << endl;
-                }
-                cout << "Escriba el segundo ano de busqueda: " << endl;
-                cin >> ano2;
-                cout << endl;
-                i = 1;
-            }
-
-            // Organizo los años
-            // FIXME: Crear un método para hacer que el segundo año sea siempre
-            // mayor que el primer año
-            if (stoi(ano2) < stoi(anio1))
-            {
-                anoAux = anio1;
-                anio1 = ano2;
-                ano2 = anoAux;
-            }
-
-            cout << "Procesando datos ..." << endl;
-            controlador.procesarDatosCsv(anio1, ano2);
-            cout << "Datos procesados con exito!" << endl;
+        catch (const ios_base::failure &e)
+        {
+            cerr << "Error de entrada/salida: " << e.what() << endl;
+        }
+        catch (const domain_error &e)
+        {
+            cerr << "Error: " << e.what() << endl;
         }
     }
-    catch (const ios_base::failure &e)
-    {
-        cerr << "ERROR: " << e.what() << endl;
-    } // igual pasa a lo siguiente!
-    /*else
-    {
-        throw domain_error("Opcion invalida");
-    }*/
-
     return parametrizacionBool;
 }
 
 void View::salir()
 {
     cout << "Cerrando programa..." << endl;
-    cout << "Recuerde revisar la carpeta de outputs para los archivos .csv exportados" << endl;
-    cout << "Programa Cerrado con exito!" << endl;
+    // cout << "Recuerde revisar la carpeta de outputs para los archivos .csv exportados" << endl;
+    //  cout << "Programa Cerrado con exito!" << endl;
 }
 
 void View::mostrarDatosExtra()
 {
     char opcionYN;
-    cout << "A continuacion vamos a mostrar datos relevantes de los programas academicos seleccionados" << "\n"
-    << endl;
+    cout << "A continuacion vamos a mostrar datos relevantes de los programas academicos seleccionados" << endl;
+    // cout << endl;
     cout << "Desea Convertir los datos a un archivo CSV?(Y/N): " << endl;
     cin >> opcionYN;
     opcionYN = tolower(opcionYN);
