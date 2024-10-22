@@ -5,10 +5,14 @@
 #include <vector>
 #include <iostream>
 #include "Consolidado.h"
+#include <utility>
+#include <map>
 
 using std::cin;
 using std::cout;
 using std::endl;
+using std::map;
+using std::pair;
 using std::string;
 using std::vector;
 
@@ -48,7 +52,8 @@ class ProgramaAcademico
     string departamentoDeOfertaDelPrograma;
     int codigoDelMunicipioPrograma;
     string municipioDeOfertaDelPrograma;
-    vector<Consolidado *> consolidados;
+    map<int, map<int, Consolidado *>> consolidadosAnio1;
+    map<int, map<int, Consolidado *>> consolidadosAnio2;
 
 public:
     ProgramaAcademico();
@@ -176,7 +181,7 @@ public:
     // Métodos get y set codigo departamento programa
     void setCodigoDelDepartamentoPrograma(int);
     int getCodigoDelDepartamentoPrograma();
-    
+
     // Métodos get y set Departamento De Oferta Del Programa
     void setDepartamentoDeOfertaDelPrograma(string &);
     string getDepartamentoDeOfertaDelPrograma();
@@ -190,8 +195,8 @@ public:
     string getMunicipioDeOfertaDelPrograma();
 
     // Métodos get y set consolidado
-    void setConsolidado(Consolidado *, int);
-    Consolidado *getConsolidado(int);
+    void setConsolidado(Consolidado *nuevoConsolidado, int, int, int);
+    Consolidado *getConsolidado(int, int, int);
 
     // Destructor
     ~ProgramaAcademico();

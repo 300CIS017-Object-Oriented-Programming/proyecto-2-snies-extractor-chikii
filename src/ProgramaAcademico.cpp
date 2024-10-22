@@ -5,7 +5,6 @@ using namespace std;
 ProgramaAcademico::ProgramaAcademico()
 {
     // Inicializa el vector con nullptrs para evitar punteros no inicializados
-    consolidados = vector<Consolidado *>(8, nullptr);
 }
 
 // Métodos get y set codigo de la institucion
@@ -369,22 +368,52 @@ string ProgramaAcademico::getMunicipioDeOfertaDelPrograma()
 }
 
 // Métodos get y set consolidado
-void ProgramaAcademico::setConsolidado(Consolidado *nuevoConsolidado, int pos)
+void ProgramaAcademico::setConsolidado(Consolidado *nuevoConsolidado, int semestre, int sexo, int anio)
 {
-    consolidados[pos] = nuevoConsolidado;
+    if (consolidadosAnio1[semestre][sexo] == nullptr)
+    {
+        consolidadosAnio1[semestre][sexo] = nuevoConsolidado;
+    }
+    else
+    {
+        consolidadosAnio2[semestre][sexo] = nuevoConsolidado;
+    }
 }
 
-Consolidado *ProgramaAcademico::getConsolidado(int posicionConsolidado)
+Consolidado *ProgramaAcademico::getConsolidado(int semestre, int sexo, int anio)
 {
-    return consolidados[posicionConsolidado];
+    Consolidado *aux = nullptr;
+    if (consolidadosAnio1[semestre][sexo]->getAno() == anio)
+    {
+        aux = consolidadosAnio1[semestre][sexo];
+        return aux;
+    }
+    else if (consolidadosAnio2[semestre][sexo]->getAno() == anio)
+    {
+        aux = consolidadosAnio2[semestre][sexo];
+        return aux;
+    }
+    return aux;
 }
 
 // Destructor
+
+// reconstruccion del destructor para adaptacion de mapa
 ProgramaAcademico::~ProgramaAcademico()
 {
-    for (Consolidado *consolidado : consolidados)
+    for (const auto &semestre : consolidadosAnio1)
     {
-        delete consolidado; // Libera la memoria de cada consolidad
+        for (const auto &sexo : semestre.second)
+        {
+            delete sexo.second;
+        }
+    }
+    for (const auto &semestre : consolidadosAnio2)
+    {
+        for (const auto &sexo : semestre.second)
+        {
+            delete sexo.second;
+        }
     }
 }
 
