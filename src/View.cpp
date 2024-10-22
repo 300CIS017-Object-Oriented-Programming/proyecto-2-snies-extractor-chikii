@@ -75,9 +75,19 @@ bool View::mostrarPantallaBienvenido()
                 i = 1;
             }
 
-            i = 0;
-            // Bucle para leer un valor valido del año2
-            while (!(isConvetibleToInt(ano2)))
+            int ano1 = stoi(anio1);
+            int anioConsecutivo = ano1 + 1;
+
+            if (anioConsecutivo > 2024)
+            {
+                throw domain_error("Ese año no se encuentra registrado, intente de nuevo");
+                parametrizacionBool = false;
+            }
+
+            cout << "Ano Consecutivo: " << anioConsecutivo << endl;
+            // i = 0;
+            //  Bucle para leer un valor valido del año2
+            /*while (!(isConvetibleToInt(ano2)))
             {
                 if (i == 1)
                 {
@@ -90,20 +100,22 @@ bool View::mostrarPantallaBienvenido()
                 cin >> ano2;
                 cout << endl;
                 i = 1;
-            }
+            }*/
 
             // Organizo los años
             // FIXME: Crear un método para hacer que el segundo año sea siempre
             // mayor que el primer año
-            if (stoi(ano2) < stoi(anio1))
+
+            /*if (anioConsecutivo < ano1)
             {
                 anoAux = anio1;
                 anio1 = ano2;
                 ano2 = anoAux;
-            }
+            }*/
 
+            string anioConsecutivoStr = to_string(anioConsecutivo);
             cout << "Procesando datos ..." << endl;
-            controlador.procesarDatosCsv(anio1, ano2);
+            controlador.procesarDatosCsv(anio1, anioConsecutivoStr);
             cout << "Datos procesados con exito!" << endl;
         }
     }
@@ -115,6 +127,8 @@ bool View::mostrarPantallaBienvenido()
     {
         throw domain_error("Opcion invalida");
     }*/
+
+    cout << "parametro bool" << parametrizacionBool << endl;
 
     return parametrizacionBool;
 }
