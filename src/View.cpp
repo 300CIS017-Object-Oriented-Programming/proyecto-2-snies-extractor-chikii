@@ -2,6 +2,7 @@
 
 View::View()
 {
+
     try
     {
         string ruta1 = string("C:/proyecto-2-snies-extractor-chikii/docs/inputs/programas.csv");

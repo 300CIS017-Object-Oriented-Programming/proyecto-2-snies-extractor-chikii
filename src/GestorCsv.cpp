@@ -1,5 +1,16 @@
 #include "GestorCsv.h"
+
 // FIXME: LA LECTURA DE ARCHIVOS CON GETLINE FUNCIONA HORRIBLEMENTE, NO TENEMOS IDEA DE POR QUÉ
+int tres = 3;
+int treinataYnueve = 39;
+int trece = 13;
+int doce = 12;
+int cero = 0;
+int treintaYcuatro = 34;
+int dos = 2;
+int seis = 6;
+int ocho = 8;
+
 vector<int> GestorCsv::leerProgramasCsv(string &ruta)
 {
     vector<int> codigosSniesRetorno;
@@ -14,9 +25,11 @@ vector<int> GestorCsv::leerProgramasCsv(string &ruta)
         string dato;
         // Saltarse la primera linea
         getline(archivoProgramasCsv, linea);
+        // cout << "Archivo programas csv: " << linea << endl; // comment FIX
         // Leer los programas
         while (getline(archivoProgramasCsv, linea))
         {
+            cout << linea << endl;
             stringstream streamLinea(linea);
             getline(streamLinea, dato, ';');
             codigosSniesRetorno.push_back(stoi(dato));
@@ -46,31 +59,35 @@ vector<vector<string>> GestorCsv::leerArchivoPrimera(string &rutaBase, string &a
 
         // Primera iteracion del ciclo para guardar las etiquetas
         getline(archivoPrimero, fila);
-        vectorFila = vector<string>(39);
         streamFila = stringstream(fila);
-        columna = 0;
+        bool flag = false;
         while ((getline(streamFila, dato, ';')))
         {
-            vectorFila[columna] = dato;
-            columna++;
+            if (!dato.empty())
+            {
+                vectorFila.push_back(dato);
+            }
+            else
+            {
+                vectorFila.push_back("empty");
+            }
         }
         matrizResultado.push_back(vectorFila);
-
         // Leer el resto del archivo
         while (getline(archivoPrimero, fila))
         {
             streamFila = stringstream(fila);
             columna = 0;
-            while ((getline(streamFila, dato, ';')) && (columna < 13))
+            while ((getline(streamFila, dato, ';')) && (columna < trece))
             {
                 vectorFila[columna] = dato;
                 columna++;
             }
 
             // Verificamos que la fila no sea una fila de error
-            if (vectorFila[12] != "Sin programa especifico")
+            if (vectorFila[doce] != "Sin programa especifico")
             {
-                it = find(codigosSnies.begin(), codigosSnies.end(), stoi(vectorFila[12]));
+                it = find(codigosSnies.begin(), codigosSnies.end(), stoi(vectorFila[doce]));
             }
             else
             {
@@ -91,7 +108,7 @@ vector<vector<string>> GestorCsv::leerArchivoPrimera(string &rutaBase, string &a
                 matrizResultado.push_back(vectorFila);
 
                 // Leo y guardo filas restantes
-                for (int j = 0; j < 3; j++)
+                for (int j = 0; j < tres; j++)
                 {
                     getline(archivoPrimero, fila);
                     streamFila = stringstream(fila);
@@ -108,6 +125,7 @@ vector<vector<string>> GestorCsv::leerArchivoPrimera(string &rutaBase, string &a
         }
     }
 
+    cout << "COMPLETADA LA ACCION" << endl;
     archivoPrimero.close();
 
     /*// Imprimir matriz resultado para verificaciones
@@ -140,7 +158,7 @@ vector<vector<string>> GestorCsv::leerArchivoSegunda(string &rutaBase, string &a
     {
         string fila;
         string dato;
-        vector<string> vectorFila(6);
+        vector<string> vectorFila(seis);
         stringstream streamFila;
         int columnaArchivo;
         int columnaVector;
@@ -155,9 +173,9 @@ vector<vector<string>> GestorCsv::leerArchivoSegunda(string &rutaBase, string &a
             streamFila = stringstream(fila);
             columnaArchivo = 0;
             columnaVector = 0;
-            while ((getline(streamFila, dato, ';')) && (columnaArchivo < 13))
+            while ((getline(streamFila, dato, ';')) && (columnaArchivo < trece))
             {
-                if (columnaArchivo == 12)
+                if (columnaArchivo == doce)
                 {
                     vectorFila[columnaVector] = dato;
                     columnaVector++;
@@ -166,9 +184,9 @@ vector<vector<string>> GestorCsv::leerArchivoSegunda(string &rutaBase, string &a
             }
 
             // Verificamos que la fila no sea una fila de error
-            if (vectorFila[0] != "Sin programa especifico")
+            if (vectorFila[cero] != "Sin programa especifico")
             {
-                it = find(codigosSnies.begin(), codigosSnies.end(), stoi(vectorFila[0]));
+                it = find(codigosSnies.begin(), codigosSnies.end(), stoi(vectorFila[cero]));
             }
             else
             {
@@ -182,7 +200,7 @@ vector<vector<string>> GestorCsv::leerArchivoSegunda(string &rutaBase, string &a
                 columnaArchivo++; // Esto se debe a la iteracion en que hacemos getline sin subirle a la columaArchivo porque nos salimos del bucle
                 while (getline(streamFila, dato, ';'))
                 {
-                    if (columnaArchivo >= 34)
+                    if (columnaArchivo >= treintaYcuatro)
                     {
                         vectorFila[columnaVector] = dato;
                         columnaVector++;
@@ -192,7 +210,7 @@ vector<vector<string>> GestorCsv::leerArchivoSegunda(string &rutaBase, string &a
                 matrizResultado.push_back(vectorFila);
 
                 // Leer las otras 3 filas
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < tres; i++)
                 {
                     getline(archivoSegundo, fila);
                     streamFila = stringstream(fila);
@@ -200,7 +218,7 @@ vector<vector<string>> GestorCsv::leerArchivoSegunda(string &rutaBase, string &a
                     columnaVector = 0;
                     while (getline(streamFila, dato, ';'))
                     {
-                        if ((columnaArchivo >= 34) || (columnaArchivo == 12))
+                        if ((columnaArchivo >= treintaYcuatro) || (columnaArchivo == doce))
                         {
                             vectorFila[columnaVector] = dato;
                             columnaVector++;
@@ -251,7 +269,7 @@ vector<vector<string>> GestorCsv::leerArchivo(string &rutaBase, string &ano, vec
     {
         string fila;
         string dato;
-        vector<string> vectorFila(2);
+        vector<string> vectorFila(dos);
         stringstream streamFila;
         int columnaArchivo;
         int columnaVector;
@@ -277,9 +295,9 @@ vector<vector<string>> GestorCsv::leerArchivo(string &rutaBase, string &ano, vec
             }
 
             // Verificamos que la fila no sea una fila de error
-            if (vectorFila[0] != "Sin programa especifico")
+            if (vectorFila[cero] != "Sin programa especifico")
             {
-                it = find(codigosSnies.begin(), codigosSnies.end(), stoi(vectorFila[0]));
+                it = find(codigosSnies.begin(), codigosSnies.end(), stoi(vectorFila[cero]));
             }
             else
             {
@@ -297,7 +315,7 @@ vector<vector<string>> GestorCsv::leerArchivo(string &rutaBase, string &ano, vec
                 matrizResultado.push_back(vectorFila);
 
                 // Leer las otras 3 filas
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < tres; i++)
                 {
                     getline(archivoSegundo, fila);
                     streamFila = stringstream(fila);
@@ -454,7 +472,7 @@ bool GestorCsv::crearArchivoBuscados(string &ruta, list<ProgramaAcademico *> &pr
         for (it = programasBuscados.begin(); it != programasBuscados.end(); it++)
         {
             // Imprimimos los 8 consolidados del programa
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < ocho; i++)
             {
                 // Imprimimos la informacion base del programa
                 archivoBuscados << (*it)->getCodigoDeLaInstitucion() << ";";
