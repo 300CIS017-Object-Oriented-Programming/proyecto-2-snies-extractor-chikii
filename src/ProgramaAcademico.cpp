@@ -368,21 +368,34 @@ string ProgramaAcademico::getMunicipioDeOfertaDelPrograma()
 }
 
 // Métodos get y set consolidado
-void ProgramaAcademico::setConsolidado(Consolidado *nuevoConsolidado, int semestre, int sexo, int anio)
+void ProgramaAcademico::setConsolidado(Consolidado *nuevoConsolidado, int m, int anio) // anio no se usa ***
 {
-    if (consolidadosAnio1[semestre][sexo] == nullptr)
+    if (anio == 1)
     {
-        consolidadosAnio1[semestre][sexo] = nuevoConsolidado;
+        consolidadosAnio1[m] = nuevoConsolidado;
     }
     else
     {
-        consolidadosAnio2[semestre][sexo] = nuevoConsolidado;
+        consolidadosAnio2[m] = nuevoConsolidado;
     }
 }
 
-Consolidado *ProgramaAcademico::getConsolidado(int semestre, int sexo, int anio)
+Consolidado *ProgramaAcademico::getConsolidado(int m, int a)
 {
     Consolidado *aux = nullptr;
+    map<int, Consolidado *> consolidadosAnio;
+
+    if (a = 1)
+    {
+        consolidadosAnio = consolidadosAnio1;
+    }
+    else
+    {
+        consolidadosAnio = consolidadosAnio2;
+    }
+
+    // Recorremos el año de consolidados que queremos luego de hacer la escogencia
+    aux = consolidadosAnio[m];
 
     return aux;
 }
@@ -392,19 +405,14 @@ Consolidado *ProgramaAcademico::getConsolidado(int semestre, int sexo, int anio)
 // reconstruccion del destructor para adaptacion de mapa
 ProgramaAcademico::~ProgramaAcademico()
 {
-    for (const auto &semestre : consolidadosAnio1)
+    for (const auto &numConsolidado : consolidadosAnio1)
     {
-        for (const auto &sexo : semestre.second)
-        {
-            delete sexo.second;
-        }
+        delete numConsolidado.second;
     }
-    for (const auto &semestre : consolidadosAnio2)
+    for (const auto &numConsolidado : consolidadosAnio2)
     {
-        for (const auto &sexo : semestre.second)
-        {
-            delete sexo.second;
-        }
+
+        delete numConsolidado.second;
     }
 }
 

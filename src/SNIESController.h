@@ -32,7 +32,7 @@ public:
     SNIESController(string &, string &, string &, string &, string &, string &, string &);
     ~SNIESController();
     void procesarDatosCsv(string &, string &);
-    void calcularDatosExtra(bool);
+    void calcularDatosExtra(bool, int, int);
     void buscarProgramas(bool, string &, int);
 };
 

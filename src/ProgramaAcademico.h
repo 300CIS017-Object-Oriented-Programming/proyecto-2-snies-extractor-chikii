@@ -52,8 +52,8 @@ class ProgramaAcademico
     string departamentoDeOfertaDelPrograma;
     int codigoDelMunicipioPrograma;
     string municipioDeOfertaDelPrograma;
-    map<int, map<int, Consolidado *>> consolidadosAnio1;
-    map<int, map<int, Consolidado *>> consolidadosAnio2;
+    map<int, Consolidado *> consolidadosAnio1;
+    map<int, Consolidado *> consolidadosAnio2;
 
 public:
     ProgramaAcademico();
@@ -195,8 +195,8 @@ public:
     string getMunicipioDeOfertaDelPrograma();
 
     // Métodos get y set consolidado
-    void setConsolidado(Consolidado *nuevoConsolidado, int, int, int);
-    Consolidado *getConsolidado(int, int, int);
+    void setConsolidado(Consolidado *nuevoConsolidado, int, int);
+    Consolidado *getConsolidado(int, int);
 
     // Destructor
     ~ProgramaAcademico();
