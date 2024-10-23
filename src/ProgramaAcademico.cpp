@@ -383,16 +383,7 @@ void ProgramaAcademico::setConsolidado(Consolidado *nuevoConsolidado, int semest
 Consolidado *ProgramaAcademico::getConsolidado(int semestre, int sexo, int anio)
 {
     Consolidado *aux = nullptr;
-    if (consolidadosAnio1[semestre][sexo]->getAno() == anio)
-    {
-        aux = consolidadosAnio1[semestre][sexo];
-        return aux;
-    }
-    else if (consolidadosAnio2[semestre][sexo]->getAno() == anio)
-    {
-        aux = consolidadosAnio2[semestre][sexo];
-        return aux;
-    }
+
     return aux;
 }
 
