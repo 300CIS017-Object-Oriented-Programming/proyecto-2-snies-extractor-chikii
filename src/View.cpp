@@ -39,6 +39,8 @@ void View::revisionAniosRango(string anoRango1, string anoRango2)
 
     cout << "Procesando el rango de anos..." << endl;
 
+    int output = preguntarFormatoOutputResultado();
+
     for (int anoActual = anoInicio; anoActual < anoFin; ++anoActual)
     {
         int anoSiguiente = anoActual + 1;
@@ -48,7 +50,7 @@ void View::revisionAniosRango(string anoRango1, string anoRango2)
         string anoActualStr = to_string(anoActual);
         string anoSiguienteStr = to_string(anoSiguiente);
 
-        int output = preguntarFormatoOutputResultado();
+        // int output = preguntarFormatoOutputResultado();
 
         controlador.procesarDatosCsv(anoActualStr, anoSiguienteStr, output);
     }
