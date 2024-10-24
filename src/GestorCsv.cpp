@@ -402,7 +402,7 @@ vector<vector<string>> GestorCsv::leerArchivo(string &rutaBase, string &ano, vec
     return matrizResultado;
 }
 
-bool GestorCsv::crearArchivo(string &ruta, map<int, ProgramaAcademico *> &mapadeProgramasAcademicos, vector<string> etiquetasColumnas, int anoInicio, int anoFin)
+bool GestorCsv::crearArchivoCsv(string &ruta, map<int, ProgramaAcademico *> &mapadeProgramasAcademicos, vector<string> etiquetasColumnas, int anoInicio, int anoFin)
 {
     // Este bool nos ayudará a saber si se creo exitosamente el archivo
     bool estadoCreacion = false;

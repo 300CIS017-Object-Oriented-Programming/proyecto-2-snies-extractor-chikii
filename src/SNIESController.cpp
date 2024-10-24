@@ -468,7 +468,7 @@ void SNIESController::procesarDatosCsv(string &ano1, string &ano2, int opcionOut
     int anoActual = stoi(ano1);
     int anoSiguiente = stoi(ano2);
 
-    bool archivoCreado = procesarTipoOutput(opcionOutput, rutaOutput, programasAcademicos, etiquetasColumnas, gestorCsvObj, anoActual, anoSiguiente);
+    bool archivoCreado = procesarTipoOutput(opcionOutput, rutaOutput, programasAcademicos, etiquetasColumnas, gestorCsvObj, anoActual, anoSiguiente /*,gestorTxtObj, gestorJSONObj*/);
 
     if (!archivoCreado)
     {
@@ -480,7 +480,7 @@ void SNIESController::procesarDatosCsv(string &ano1, string &ano2, int opcionOut
     }
 }
 
-bool SNIESController::procesarTipoOutput(int opcion, string rutaOutput, map<int, ProgramaAcademico *> &programasAcademicos, vector<string> &etiquetasColumnas, GestorCsv &gestorCsvObj, int anoInicio, int anoFin) /*, GestorTXT &gestorTxtObj, GestorJSON &gestorJSONObj */
+bool SNIESController::procesarTipoOutput(int opcion, string rutaOutput, map<int, ProgramaAcademico *> &programasAcademicos, vector<string> &etiquetasColumnas, GestorCsv &gestorCsvObj, int anoInicio, int anoFin /*, GestorTxt &gestorTxtObj, GestorJSON &gestorJSONObj*/)
 {
     bool archivoCreado = false;
 
@@ -490,15 +490,15 @@ bool SNIESController::procesarTipoOutput(int opcion, string rutaOutput, map<int,
         {
         case 1: // CSV
             cout << "Exportando archivo resultado.csv..." << endl;
-            archivoCreado = gestorCsvObj.crearArchivo(rutaOutput, programasAcademicos, etiquetasColumnas, anoInicio, anoFin);
+            archivoCreado = gestorCsvObj.crearArchivoCsv(rutaOutput, programasAcademicos, etiquetasColumnas, anoInicio, anoFin);
             break;
         case 2: // TXT
             cout << "Exportando archivo resultado.txt..." << endl;
-            // archivoCreado = gestorTxtObj.crearArchivo(rutaOutput, programasAcademicos, etiquetasColumnas);
+            // archivoCreado = gestorTxtObj.crearArchivoTxt(rutaOutput, programasAcademicos, etiquetasColumnas, anoInicio, anoFin);
             break;
         case 3: // JSON
             cout << "Exportando archivo resultado.json..." << endl;
-            // archivoCreado = gestorJSONObj.crearArchivo(rutaOutput, programasAcademicos, etiquetasColumnas);
+            // archivoCreado = gestorJSONObj.crearArchivoJSON(rutaOutput, programasAcademicos, etiquetasColumnas);
             break;
         case 4: // Ninguna
             cout << "No se ha creado ningun archivo." << endl;

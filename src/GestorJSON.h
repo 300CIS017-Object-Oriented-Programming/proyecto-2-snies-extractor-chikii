@@ -7,5 +7,5 @@ class GestorJSON
 
 public:
     GestorJSON();
-    bool generarArchivoJSON(string &ruta, map<int, ProgramaAcademico *> &mapadeProgramasAcademicos, vector<string> etiquetasColumnas, int, int);
+    bool crearArchivoJSON(string &ruta, map<int, ProgramaAcademico *> &mapadeProgramasAcademicos, vector<string> etiquetasColumnas, int, int);
 };
