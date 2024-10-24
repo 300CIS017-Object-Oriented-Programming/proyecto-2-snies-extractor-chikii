@@ -27,29 +27,31 @@ View::~View()
     controlador.~SNIESController();
 }
 
-void View::revisionAnios(string anio1)
+void View::revisionAniosRango(string anoRango1, string anoRango2)
 {
-    if (anio1 < "2021")
+    int anoInicio = stoi(anoRango1);
+    int anoFin = stoi(anoRango2);
+
+    if (anoInicio < 2021 || anoFin > 2024 || anoInicio >= anoFin)
     {
-        throw domain_error("El ano no se encuentra registrado, intente de nuevo.");
+        throw domain_error("El rango de anos no es valido, intente de nuevo.");
     }
 
-    int ano1 = stoi(anio1);
-    int anioConsecutivo = ano1 + 1;
+    cout << "Procesando el rango de anos..." << endl;
 
-    // Verificamos que el año consecutivo no exceda el año permitido
-    if (anioConsecutivo > 2024)
+    for (int anoActual = anoInicio; anoActual < anoFin; ++anoActual)
     {
-        throw domain_error("El segundo ano no se encuentra registrado, intente de nuevo.");
+        int anoSiguiente = anoActual + 1;
+        cout << endl;
+        cout << "Procesando datos para el ano: " << anoActual << " - " << anoSiguiente << endl;
+
+        string anoActualStr = to_string(anoActual);
+        string anoSiguienteStr = to_string(anoSiguiente);
+
+        int output = preguntarFormatoOutputResultado();
+
+        controlador.procesarDatosCsv(anoActualStr, anoSiguienteStr, output);
     }
-
-    cout << "Ano Consecutivo: " << anioConsecutivo << endl;
-
-    string anioConsecutivoStr = to_string(anioConsecutivo);
-    cout << "Procesando datos ..." << endl;
-
-    // Procesamos los datos con el controlador
-    controlador.procesarDatosCsv(anio1, anioConsecutivoStr);
 
     cout << "Datos procesados con exito!" << endl;
 }
@@ -70,13 +72,14 @@ bool View::mostrarPantallaBienvenido()
         try
         {
             // Solicitamos el año de busqueda
-            string anio1;
-            cout << "Escriba el primer ano de busqueda: " << endl;
-            cin >> anio1;
+            string anioRango1, anioRango2;
+            cout << "Escriba el primer ano del rango de busqueda: " << endl;
+            cin >> anioRango1;
+            cout << "Escriba el segundo ano del rango de busqueda: " << endl;
+            cin >> anioRango2;
             cout << endl;
 
-            // Intentamos validar los años ingresados
-            revisionAnios(anio1);
+            revisionAniosRango(anioRango1, anioRango2);
 
             // Si llegamos aqui sin excepciones, la parametrizacion es correcta
             inputValido = true;
@@ -102,44 +105,134 @@ void View::salir()
     //  cout << "Programa Cerrado con exito!" << endl;
 }
 
+int View::preguntarFormatoOutputResultado()
+{
+    int opcion;
+    bool inputValido = false;
+
+    cout << "--------------------------------------------" << endl;
+    cout << "Como desea exportar el archivo de resultados?" << endl;
+    cout << "1) CSV" << endl;
+    cout << "2) TXT" << endl;
+    cout << "3) JSON" << endl;
+
+    while (!inputValido)
+    {
+        cin >> opcion;
+        switch (opcion)
+        {
+        case 1:
+            // cout << "Exportando archivo resultado.csv..." << endl;
+            cout << endl;
+            return opcion = 1;
+            break;
+
+        case 2: // TXT
+            // cout << "Exportando archivo resultado.txt..." << endl;
+            cout << endl;
+            return opcion = 2;
+            break;
+
+        case 3: // JSON
+            // cout << "Exportando archivo resultado.json..." << endl;
+            cout << endl;
+            return opcion = 3;
+            break;
+
+        default: // Entrada inválida
+            throw out_of_range("Opcion invalida. Debe ingresar un valor entre 1 y 3.");
+        }
+    }
+    return opcion;
+}
+
+int View::preguntarFormatoOutputExtra()
+{
+    int opcionYN;
+
+    cout << "--------------------------------------------" << endl;
+    cout << "Como desea exportar el archivo de extra?" << endl;
+    cout << "1) CSV" << endl;
+    cout << "2) TXT" << endl;
+    cout << "3) JSON" << endl;
+
+    try
+    {
+        cin >> opcionYN;
+        cout << "\n";
+
+        switch (opcionYN)
+        {
+        case 1: // CSV
+            cout << "Exportando archivo extra.csv..." << endl;
+            // controlador.calcularDatosExtra(true);
+            break;
+
+        case 2: // TXT
+            cout << "Exportando archivo extra.txt..." << endl;
+            // archivoCreado = gestorTxtObj.crearArchivo(rutaOutput, programasAcademicos, etiquetasColumnas);
+            break;
+
+        case 3: // JSON
+            cout << "Exportando archivo extra.json..." << endl;
+            // archivoCreado = gestorJSONObj.crearArchivo(rutaOutput, programasAcademicos, etiquetasColumnas);
+            break;
+
+        default: // Entrada inválida
+            throw out_of_range("Opcion invalida. Debe ingresar un valor entre 1 y 3.");
+        }
+    }
+    catch (const invalid_argument &e)
+    {
+        cerr << "ERROR: " << e.what() << endl;
+        cin.clear();
+    }
+    catch (const out_of_range &e)
+    {
+        cerr << "ERROR: " << e.what() << endl;
+    }
+    catch (const ios_base::failure &e)
+    {
+        cerr << "Error de entrada/salida: " << e.what() << endl;
+    }
+}
+
 void View::mostrarDatosExtra()
 {
     try
     {
-        int opcionYN;
-        cout << "A continuacion vamos a mostrar datos relevantes de los programas academicos seleccionados" << endl;
-        cout << "¿Como desea visualizar los resultados de busqueda?" << endl;
-        cout << "1) CSV" << endl;
-        cout << "2) TXT" << endl;
-        cout << "3) JSON" << endl;
-        cout << "4) No deseo visualizarlo" << endl;
-
-        if (!(cin >> opcionYN))
-        {
-            throw invalid_argument("Entrada no valida. Debe ingresar un numero entre 1 y 4.");
-        }
+        int opcionExtra;
+        cout << endl;
+        cout << "A continuacion escoge cual de los dos archivos deseas exportar con datos relevantes de los programas academicos seleccionados:" << endl;
+        cout << "1) " << endl;
+        cout << " - Consolidado de estudiantes por ano en programas presenciales o virtuales" << endl;
+        cout << " - Diferencia porcentual anual entre la cantidad de nuevos matriculados durante los anos de busqueda por programa" << endl;
+        cout << " - Lista de programas sin nuevos matriculados en 3 semestres consecutivos" << endl;
+        cout << "2) Resultado de busqueda por clave y formacion" << endl;
+        cout << "3) No deseo exportar ningun extra" << endl;
+        cout << endl;
+        cout << "Que opcion desea exportar?" << endl;
+        cin >> opcionExtra;
 
         cout << "\n";
-        switch (opcionYN)
+        int formatoOutput;
+        switch (opcionExtra)
         {
-        case 1: // CSV
-            cout << "Creando archivo CSV..." << endl;
+        case 1:
+            cout << "Creando archivo con requisitos 1a,1b y 1c..." << endl;
+            formatoOutput = preguntarFormatoOutputExtra();
+            // ....
+            break;
+        case 2: // csv
+            cout << "Creando archivo resultado de busqueda por clave y formacion..." << endl;
+            formatoOutput = preguntarFormatoOutputExtra();
             controlador.calcularDatosExtra(true);
             break;
-        case 2: // TXT
-            cout << "Creando archivo TXT..." << endl;
-            //
-            break;
-        case 3: // JSON
-            cout << "Creando archivo JSON..." << endl;
-            //
-            break;
-        case 4: // Ninguna
-            cout << "No se ha creado ningun archivo." << endl;
+        case 3: // ningun
             controlador.calcularDatosExtra(false);
             break;
         default: // Manejar entradas fuera del rango esperado
-            throw out_of_range("Opcion invalida. Debe ingresar un valor entre 1 y 4.");
+            throw out_of_range("Opcion invalida. Debe ingresar un valor entre 1 y 3.");
         }
     }
     catch (const invalid_argument &e)
@@ -173,7 +266,7 @@ void View::buscarPorPalabraClaveYFormacion()
 
         if (opcionYN == 'y')
         {
-            cout << "Deseas convertir los datos del programa academico a un CSV, TXT O JSON?: " << endl;
+            /*cout << "Deseas convertir los datos del programa academico a un CSV, TXT O JSON?: " << endl;
             cin >> opcionOutput;
             cout << "\n";
             opcionOutput = tolower(opcionOutput);
@@ -186,7 +279,7 @@ void View::buscarPorPalabraClaveYFormacion()
             else
             {
                 convertirCSV = false;
-            }
+            }*/
 
             cout << "Escriba la palabra clave para buscar los programas por nombre:" << endl;
             cin >> palabraClave;
