@@ -2,7 +2,7 @@
 #define PROGRAMA_ACADEMICO_H
 
 #include <string>
-#include <vector>
+#include <list>
 #include <iostream>
 #include "Consolidado.h"
 #include <utility>
@@ -11,13 +11,14 @@
 using std::cin;
 using std::cout;
 using std::endl;
+using std::list;
 using std::map;
 using std::pair;
 using std::string;
-using std::vector;
 
 class ProgramaAcademico
 {
+private:
     int codigoDeLaInstitucion;
     int iesPadre;
     string institucionDeEducacionSuperiorIes;
@@ -52,11 +53,14 @@ class ProgramaAcademico
     string departamentoDeOfertaDelPrograma;
     int codigoDelMunicipioPrograma;
     string municipioDeOfertaDelPrograma;
-    map<int, Consolidado *> consolidadosAnio1;
-    map<int, Consolidado *> consolidadosAnio2;
+    // map<int, Consolidado *> consolidadosAnio1;
+    // map<int, Consolidado *> consolidadosAnio2;
+    map<int, list<Consolidado *>> consolidadosPorAnio;
+
+    // camnio grande en programa
 
 public:
-    ProgramaAcademico();
+    ProgramaAcademico() = default;
 
     // Métodos get y set codigo de la institucion
     void setCodigoDeLaInstitucion(int);
@@ -195,7 +199,7 @@ public:
     string getMunicipioDeOfertaDelPrograma();
 
     // Métodos get y set consolidado
-    void setConsolidado(Consolidado *nuevoConsolidado, int, int);
+    void setConsolidado(Consolidado *nuevoConsolidado, int);
     Consolidado *getConsolidado(int, int);
 
     // Destructor
@@ -203,5 +207,3 @@ public:
 };
 
 #endif
-
-// calidad bien

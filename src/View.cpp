@@ -102,7 +102,7 @@ void View::salir()
     //  cout << "Programa Cerrado con exito!" << endl;
 }
 
-void View::mostrarDatosExtra()
+void View::mostrarDatosExtra(int anio1, int anio2)
 {
     char opcionYN;
     cout << "A continuacion vamos a mostrar datos relevantes de los programas academicos seleccionados" << endl;
@@ -115,12 +115,12 @@ void View::mostrarDatosExtra()
     // Simplificar el código de acuerdo a ese ajuste
     if (opcionYN == 'y')
     {
-        controlador.calcularDatosExtra(true);
+        controlador.calcularDatosExtra(true, anio1, anio2);
     }
 
     else
     {
-        controlador.calcularDatosExtra(false);
+        controlador.calcularDatosExtra(false, anio1, anio2);
     }
 }
 

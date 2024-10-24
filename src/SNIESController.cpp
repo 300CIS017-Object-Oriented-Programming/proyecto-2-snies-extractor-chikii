@@ -434,7 +434,7 @@ void SNIESController::procesarDatosCsv(string &ano1, string &ano2)
             int sexo = stoi(programasAcademicosVector[i + m][aj]);
             int semestre = stoi(programasAcademicosVector[i + m][am]);
             int anio = stoi(programasAcademicosVector[i + m][al]);
-            programaAcademico->setConsolidado(consolidado[m], m, stoi(ano1));
+            programaAcademico->setConsolidado(consolidado[m], stoi(ano1));
         }
         programasAcademicos.emplace(programaAcademico->getCodigoSniesDelPrograma(), programaAcademico);
     }
@@ -460,7 +460,7 @@ void SNIESController::procesarDatosCsv(string &ano1, string &ano2)
                 consolidado[m]->setAno(stoi(programasAcademicosVector[j + m][al]));
                 consolidado[m]->setSemestre(stoi(programasAcademicosVector[j + m][am]));
                 consolidado[m]->setAdmitidos(stoi(programasAcademicosVector[j + m][an]));
-                programa->setConsolidado(consolidado[m], m, stoi(ano2));
+                programa->setConsolidado(consolidado[m], stoi(ano2));
             }
         }
     }
@@ -484,7 +484,8 @@ void SNIESController::procesarDatosCsv(string &ano1, string &ano2)
 
         for (int k = 0; k < programasAcademicosVector.size(); k += 4)
         {
-            map<int, ProgramaAcademico *>::iterator it = programasAcademicos.find(stoi(programasAcademicosVector[k][0]));
+            map<int, ProgramaAcademico *>::iterator it =
+                programasAcademicos.find(stoi(programasAcademicosVector[k][0]));
             if (it != programasAcademicos.end())
             {
                 ProgramaAcademico *programa = it->second;
@@ -500,7 +501,8 @@ void SNIESController::procesarDatosCsv(string &ano1, string &ano2)
         programasAcademicosVector = gestorCsvObj.leerArchivo(rutaInscritos, ano1, codigosSnies, 12);
         for (int k = 0; k < programasAcademicosVector.size(); k += 4)
         {
-            map<int, ProgramaAcademico *>::iterator it = programasAcademicos.find(stoi(programasAcademicosVector[k][0]));
+            map<int, ProgramaAcademico *>::iterator it =
+                programasAcademicos.find(stoi(programasAcademicosVector[k][0]));
             if (it != programasAcademicos.end())
             {
                 ProgramaAcademico *programa = it->second;
@@ -512,6 +514,8 @@ void SNIESController::procesarDatosCsv(string &ano1, string &ano2)
                 }
             }
         }
+
+        // hay que revisar que hace esto
 
         if (ano2 == "2022")
         {
@@ -738,14 +742,14 @@ void SNIESController::calcularDatosExtra(bool flag, int ano1, int ano2)
             if (i == 0)
             {
                 consolidados[0] = programa->getConsolidado(i, ano1);
-                consolidados[1] = programa->getConsolidado(i + 2, ano1);
+                consolidados[1] = programa->getConsolidado(i + 1, ano1);
                 int neosHombres = consolidados[0]->getMatriculadosPrimerSemestre();
                 int neosMujeres = consolidados[1]->getMatriculadosPrimerSemestre();
                 SumaNeosPrimerSemestre = neosHombres + neosMujeres;
             }
             else if (i == 1)
             {
-                consolidados[2] = programa->getConsolidado(i, ano1);
+                consolidados[2] = programa->getConsolidado(i + 1, ano1);
                 consolidados[3] = programa->getConsolidado(i + 2, ano1);
                 int neosHombres = consolidados[2]->getMatriculadosPrimerSemestre();
                 int neosMujeres = consolidados[3]->getMatriculadosPrimerSemestre();
@@ -753,16 +757,18 @@ void SNIESController::calcularDatosExtra(bool flag, int ano1, int ano2)
             }
             else if (i == 2)
             {
-                consolidados[4] = programa->getConsolidado(i + 2);
-                consolidados[5] = programa->getConsolidado(i + 4);
+                int indice = 0;
+                consolidados[4] = programa->getConsolidado(indice, ano2);
+                consolidados[5] = programa->getConsolidado(indice + 1, ano2);
                 int neosHombres = consolidados[4]->getMatriculadosPrimerSemestre();
                 int neosMujeres = consolidados[5]->getMatriculadosPrimerSemestre();
                 SumaNeosTercerSemestre = neosHombres + neosMujeres;
             }
             else if (i == 3)
             {
-                consolidados[6] = programa->getConsolidado(i + 2);
-                consolidados[7] = programa->getConsolidado(i + 4);
+                int indice = 2;
+                consolidados[6] = programa->getConsolidado(indice, ano2);
+                consolidados[7] = programa->getConsolidado(indice + 1, ano2);
                 int neosHombres = consolidados[6]->getMatriculadosPrimerSemestre();
                 int neosMujeres = consolidados[7]->getMatriculadosPrimerSemestre();
                 SumaNeosCuartoSemestre = neosHombres + neosMujeres;

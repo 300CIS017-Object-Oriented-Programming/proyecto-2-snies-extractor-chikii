@@ -16,7 +16,7 @@ public:
     View();
     ~View();
     bool mostrarPantallaBienvenido();
-    void mostrarDatosExtra();
+    void mostrarDatosExtra(int, int);
     void buscarPorPalabraClaveYFormacion();
     void salir();
     bool isConvetibleToInt(const string &);

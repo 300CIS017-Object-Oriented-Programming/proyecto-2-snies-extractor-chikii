@@ -2,10 +2,12 @@
 
 using namespace std;
 
+/*
 ProgramaAcademico::ProgramaAcademico()
 {
     // Inicializa el vector con nullptrs para evitar punteros no inicializados
 }
+*/
 
 // Métodos get y set codigo de la institucion
 void ProgramaAcademico::setCodigoDeLaInstitucion(int nuevoCodigoDeLaInstitucion)
@@ -368,36 +370,23 @@ string ProgramaAcademico::getMunicipioDeOfertaDelPrograma()
 }
 
 // Métodos get y set consolidado
-void ProgramaAcademico::setConsolidado(Consolidado *nuevoConsolidado, int m, int anio) // anio no se usa ***
+
+void ProgramaAcademico::setConsolidado(Consolidado *nuevoConsolidado, int anio)
 {
-    if (anio == 1)
-    {
-        consolidadosAnio1[m] = nuevoConsolidado;
-    }
-    else
-    {
-        consolidadosAnio2[m] = nuevoConsolidado;
-    }
+    consolidadosPorAnio[anio].push_back(nuevoConsolidado);
 }
 
-Consolidado *ProgramaAcademico::getConsolidado(int m, int a)
+Consolidado *ProgramaAcademico::getConsolidado(int m, int anio)
 {
-    Consolidado *aux = nullptr;
-    map<int, Consolidado *> consolidadosAnio;
-
-    if (a = 1)
+    int index = 0;
+    for (const auto &consolidado : consolidadosPorAnio[anio])
     {
-        consolidadosAnio = consolidadosAnio1;
+        if (index == m)
+        {
+            return consolidado;
+        }
+        index++;
     }
-    else
-    {
-        consolidadosAnio = consolidadosAnio2;
-    }
-
-    // Recorremos el año de consolidados que queremos luego de hacer la escogencia
-    aux = consolidadosAnio[m];
-
-    return aux;
 }
 
 // Destructor
@@ -405,15 +394,11 @@ Consolidado *ProgramaAcademico::getConsolidado(int m, int a)
 // reconstruccion del destructor para adaptacion de mapa
 ProgramaAcademico::~ProgramaAcademico()
 {
-    for (const auto &numConsolidado : consolidadosAnio1)
+    for (const auto &anio : consolidadosPorAnio)
     {
-        delete numConsolidado.second;
-    }
-    for (const auto &numConsolidado : consolidadosAnio2)
-    {
-
-        delete numConsolidado.second;
+        for (const auto &consolidado : anio.second)
+        {
+            delete consolidado;
+        }
     }
 }
-
-// calidad bien

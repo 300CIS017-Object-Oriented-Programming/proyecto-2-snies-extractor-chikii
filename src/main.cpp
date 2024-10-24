@@ -12,7 +12,7 @@ int main()
 
         if (archivosParametrizados)
         {
-            menu.mostrarDatosExtra();
+            // menu.mostrarDatosExtra();
             menu.buscarPorPalabraClaveYFormacion();
         }
 

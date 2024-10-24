@@ -425,7 +425,10 @@ bool GestorCsv::crearArchivo(string &ruta, map<int, ProgramaAcademico *> &mapade
                 archivoResultados << (it->second)->getCodigoDelMunicipioPrograma() << ";";
                 archivoResultados << (it->second)->getMunicipioDeOfertaDelPrograma() << ";";
 
-                // Imprimimos la información del consolidado: (ID SEXO;SEXO;AÑO;SEMESTRE;ADMITIDOS;GRADUADOS;INSCRITOS;MATRICULADOS;NEOS)
+                // Imprimimos la información del consolidado:
+                // (ID SEXO;SEXO;AÑO;SEMESTRE;ADMITIDOS;GRADUADOS;INSCRITOS;MATRICULADOS;NEOS)
+
+                // Aca hay que hacer el metodo para poder calcular el consolidado solo con un numero, hay que ver como
                 Consolidado *consolidadoActual = (it->second)->getConsolidado(i);
                 archivoResultados << consolidadoActual->getIdSexo() << ";";
                 archivoResultados << consolidadoActual->getSexo() << ";";
