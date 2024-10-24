@@ -5,13 +5,11 @@
 #include <vector>
 #include <iostream>
 
-
 using std::cin;
 using std::cout;
 using std::endl;
 using std::string;
 using std::vector;
-
 
 class Consolidado
 {
@@ -33,7 +31,7 @@ public:
     int getIdSexo();
     void setIdSexo(int);
 
-    string getSexo();
+    const string getSexo();
     void setSexo(const string &); // Evita pasar por referencia no constante para evitar errores
 
     int getAno();

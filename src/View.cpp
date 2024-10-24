@@ -50,7 +50,7 @@ void View::revisionAniosRango(string anoRango1, string anoRango2)
 
         int output = preguntarFormatoOutputResultado();
 
-        controlador.procesarDatosCsv(anoActualStr, anoSiguienteStr, output);
+        controlador.procesarDatosCsv(anoActualStr, anoSiguienteStr, output, anoInicio, anoFin);
     }
 
     cout << "Datos procesados con exito!" << endl;
