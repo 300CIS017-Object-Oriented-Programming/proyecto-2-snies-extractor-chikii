@@ -230,6 +230,7 @@ direction BT
         +void buscarPorPalabraClaveYFormacion()
         +void salir()
         +bool isConvetibleToInt()
+        +void revisionAnios(string)
     }
     class Main {
         + int main()
