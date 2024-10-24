@@ -11,8 +11,40 @@ int dos = 2;
 int seis = 6;
 int ocho = 8;
 
+char detectarDelimitador(string &ruta)
+{
+    ifstream archivo(ruta);
+    if (!archivo.is_open())
+    {
+        throw ios_base::failure("Archivo " + ruta + " no se pudo abrir correctamente");
+    }
+
+    string primeraLinea;
+    if (getline(archivo, primeraLinea))
+    {
+        // Posibles delimitadores
+        char delimitadores[] = {',', ';', ':', '.'};
+
+        // Busca el primer delimitador en la línea
+        for (char delimitador : delimitadores)
+        {
+            cout << "SE EJECUTO" << endl;
+            if (primeraLinea.find(delimitador) != string::npos)
+            {
+                // archivo.close();    // Cierra el archivo antes de retornar
+                return delimitador; // Retorna el primer delimitador encontrado
+            }
+        }
+    }
+
+    archivo.close(); // Cierra el archivo
+    throw ios_base::failure("No se encuentra delimitador");
+}
+
 vector<int> GestorCsv::leerProgramasCsv(string &ruta)
 {
+    char delimitador = ';';
+    // char delimitador = detectarDelimitador(ruta);
     vector<int> codigosSniesRetorno;
     ifstream archivoProgramasCsv(ruta);
     if (!(archivoProgramasCsv.is_open()))
@@ -31,7 +63,7 @@ vector<int> GestorCsv::leerProgramasCsv(string &ruta)
         {
             cout << linea << endl;
             stringstream streamLinea(linea);
-            getline(streamLinea, dato, ';');
+            getline(streamLinea, dato, delimitador); //
             codigosSniesRetorno.push_back(stoi(dato));
         }
     }
@@ -41,6 +73,8 @@ vector<int> GestorCsv::leerProgramasCsv(string &ruta)
 
 vector<vector<string>> GestorCsv::leerArchivoPrimera(string &rutaBase, string &ano, vector<int> &codigosSnies)
 {
+    char delimitador = ';';
+    // char delimitador = detectarDelimitador(rutaBase);
     vector<vector<string>> matrizResultado;
     string rutaCompleta = rutaBase + ano + ".csv";
     ifstream archivoPrimero(rutaCompleta);
@@ -50,6 +84,7 @@ vector<vector<string>> GestorCsv::leerArchivoPrimera(string &rutaBase, string &a
     }
     else
     {
+
         string fila;
         string dato;
         vector<string> vectorFila;
@@ -61,7 +96,7 @@ vector<vector<string>> GestorCsv::leerArchivoPrimera(string &rutaBase, string &a
         getline(archivoPrimero, fila);
         streamFila = stringstream(fila);
         bool flag = false;
-        while ((getline(streamFila, dato, ';')))
+        while ((getline(streamFila, dato, delimitador))) //
         {
             if (!dato.empty())
             {
@@ -78,7 +113,7 @@ vector<vector<string>> GestorCsv::leerArchivoPrimera(string &rutaBase, string &a
         {
             streamFila = stringstream(fila);
             columna = 0;
-            while ((getline(streamFila, dato, ';')) && (columna < trece))
+            while ((getline(streamFila, dato, delimitador)) && (columna < trece))
             {
                 vectorFila[columna] = dato;
                 columna++;
@@ -100,7 +135,7 @@ vector<vector<string>> GestorCsv::leerArchivoPrimera(string &rutaBase, string &a
                 // Termino de leer y guardar primera fila
                 vectorFila[columna] = dato; // Guardamos el dato que habiamos geteado justo antes de hacer la verificacion
                 columna++;
-                while ((getline(streamFila, dato, ';')))
+                while ((getline(streamFila, dato, delimitador)))
                 {
                     vectorFila[columna] = dato;
                     columna++;
@@ -113,7 +148,7 @@ vector<vector<string>> GestorCsv::leerArchivoPrimera(string &rutaBase, string &a
                     getline(archivoPrimero, fila);
                     streamFila = stringstream(fila);
                     columna = 0;
-                    while ((getline(streamFila, dato, ';')))
+                    while ((getline(streamFila, dato, delimitador)))
                     {
                         vectorFila[columna] = dato;
                         columna++;
@@ -146,6 +181,8 @@ vector<vector<string>> GestorCsv::leerArchivoPrimera(string &rutaBase, string &a
 
 vector<vector<string>> GestorCsv::leerArchivoSegunda(string &rutaBase, string &ano, vector<int> &codigosSnies)
 {
+    char delimitador = ';';
+    // char delimitador = detectarDelimitador(rutaBase);
     vector<vector<string>> matrizResultado;
     string rutaCompleta = rutaBase + ano + ".csv";
     ifstream archivoSegundo(rutaCompleta);
@@ -173,7 +210,7 @@ vector<vector<string>> GestorCsv::leerArchivoSegunda(string &rutaBase, string &a
             streamFila = stringstream(fila);
             columnaArchivo = 0;
             columnaVector = 0;
-            while ((getline(streamFila, dato, ';')) && (columnaArchivo < trece))
+            while ((getline(streamFila, dato, delimitador)) && (columnaArchivo < trece))
             {
                 if (columnaArchivo == doce)
                 {
@@ -198,7 +235,7 @@ vector<vector<string>> GestorCsv::leerArchivoSegunda(string &rutaBase, string &a
             {
                 // Termino de leer y guardar primera fila
                 columnaArchivo++; // Esto se debe a la iteracion en que hacemos getline sin subirle a la columaArchivo porque nos salimos del bucle
-                while (getline(streamFila, dato, ';'))
+                while (getline(streamFila, dato, delimitador))
                 {
                     if (columnaArchivo >= treintaYcuatro)
                     {
@@ -216,7 +253,7 @@ vector<vector<string>> GestorCsv::leerArchivoSegunda(string &rutaBase, string &a
                     streamFila = stringstream(fila);
                     columnaArchivo = 0;
                     columnaVector = 0;
-                    while (getline(streamFila, dato, ';'))
+                    while (getline(streamFila, dato, delimitador))
                     {
                         if ((columnaArchivo >= treintaYcuatro) || (columnaArchivo == doce))
                         {
@@ -257,6 +294,8 @@ vector<vector<string>> GestorCsv::leerArchivoSegunda(string &rutaBase, string &a
 
 vector<vector<string>> GestorCsv::leerArchivo(string &rutaBase, string &ano, vector<int> &codigosSnies, int colmunaCodigoSnies)
 {
+    char delimitador = ';';
+    // char delimitador = detectarDelimitador(rutaBase);
     vector<vector<string>> matrizResultado;
     string rutaCompleta = rutaBase + ano + ".csv";
     ifstream archivoSegundo(rutaCompleta);
@@ -284,7 +323,7 @@ vector<vector<string>> GestorCsv::leerArchivo(string &rutaBase, string &ano, vec
             streamFila = stringstream(fila);
             columnaArchivo = 0;
             columnaVector = 0;
-            while ((getline(streamFila, dato, ';')) && (columnaArchivo < (colmunaCodigoSnies + 1)))
+            while ((getline(streamFila, dato, delimitador)) && (columnaArchivo < (colmunaCodigoSnies + 1)))
             {
                 if (columnaArchivo == colmunaCodigoSnies)
                 {
@@ -308,7 +347,7 @@ vector<vector<string>> GestorCsv::leerArchivo(string &rutaBase, string &ano, vec
             if (it != codigosSnies.end()) // Caso cuando SI es parte de los que me interesan
             {
                 // Terminar de leer primera fila
-                while (getline(streamFila, dato, ';'))
+                while (getline(streamFila, dato, delimitador))
                 {
                 }
                 vectorFila[columnaVector] = dato;
@@ -321,7 +360,7 @@ vector<vector<string>> GestorCsv::leerArchivo(string &rutaBase, string &ano, vec
                     streamFila = stringstream(fila);
                     columnaArchivo = 0;
                     columnaVector = 0;
-                    while (getline(streamFila, dato, ';'))
+                    while (getline(streamFila, dato, delimitador))
                     {
                         if (columnaArchivo == colmunaCodigoSnies)
                         {
@@ -367,11 +406,19 @@ vector<vector<string>> GestorCsv::leerArchivo(string &rutaBase, string &ano, vec
     return matrizResultado;
 }
 
-bool GestorCsv::crearArchivo(string &ruta, map<int, ProgramaAcademico *> &mapadeProgramasAcademicos, vector<string> etiquetasColumnas)
+bool GestorCsv::crearArchivo(string &ruta, map<int, ProgramaAcademico *> &mapadeProgramasAcademicos, vector<string> etiquetasColumnas, int anoInicio, int anoFin)
 {
     // Este bool nos ayudará a saber si se creo exitosamente el archivo
     bool estadoCreacion = false;
-    string rutaCompleta = ruta + "resultados.csv";
+    string anoRango1 = to_string(anoInicio);
+    // int anoSig = anoInicio + 1;
+    string anoRango2 = to_string(anoFin);
+    // cout << "ANIO INICIO: " << anoInicio << endl; // debug
+    // cout << "ANIO FIN: " << anoFin << endl;       // debug
+    string rangoAno = anoRango1 + "-" + anoRango2;
+    // cout << "RANGO: " << rangoAno << endl; // debug
+    string rutaCompleta = ruta + "resultados" + rangoAno + ".csv";
+    // string rutaCompleta = ruta + "resultados.csv";
     ofstream archivoResultados(rutaCompleta);
     if (archivoResultados.is_open())
     {
