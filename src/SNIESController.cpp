@@ -18,6 +18,8 @@ SNIESController::SNIESController(string &nuevaRutaProgramasCSV, string &nuevaRut
 {
     // FIXME quitar los parámetros de las rutas de los parametros del constructor, usar el archivo de settings.h para poner las constantes
     gestorCsvObj = GestorCsv();
+    gestorTxtObj = GestorTxt();
+    gestorJSONObj = GestorJSON();
     rutaProgramasCSV = nuevaRutaProgramasCSV;
     rutaAdmitidos = nuevaRutaAdmitidos;
     rutaGraduados = nuevaRutaGraduados;
@@ -468,7 +470,7 @@ void SNIESController::procesarDatosCsv(string &ano1, string &ano2, int opcionOut
     int anoActual = stoi(ano1);
     int anoSiguiente = stoi(ano2);
 
-    bool archivoCreado = procesarTipoOutput(opcionOutput, rutaOutput, programasAcademicos, etiquetasColumnas, gestorCsvObj, anoActual, anoSiguiente /*,gestorTxtObj, gestorJSONObj*/);
+    bool archivoCreado = procesarTipoOutput(opcionOutput, rutaOutput, programasAcademicos, etiquetasColumnas, gestorCsvObj, anoActual, anoSiguiente, gestorTxtObj, gestorJSONObj);
 
     if (!archivoCreado)
     {
@@ -480,7 +482,7 @@ void SNIESController::procesarDatosCsv(string &ano1, string &ano2, int opcionOut
     }
 }
 
-bool SNIESController::procesarTipoOutput(int opcion, string rutaOutput, map<int, ProgramaAcademico *> &programasAcademicos, vector<string> &etiquetasColumnas, GestorCsv &gestorCsvObj, int anoInicio, int anoFin /*, GestorTxt &gestorTxtObj, GestorJSON &gestorJSONObj*/)
+bool SNIESController::procesarTipoOutput(int opcion, string rutaOutput, map<int, ProgramaAcademico *> &programasAcademicos, vector<string> &etiquetasColumnas, GestorCsv &gestorCsvObj, int anoInicio, int anoFin, GestorTxt &gestorTxtObj, GestorJSON &gestorJSONObj)
 {
     bool archivoCreado = false;
 
@@ -494,11 +496,11 @@ bool SNIESController::procesarTipoOutput(int opcion, string rutaOutput, map<int,
             break;
         case 2: // TXT
             cout << "Exportando archivo resultado.txt..." << endl;
-            // archivoCreado = gestorTxtObj.crearArchivoTxt(rutaOutput, programasAcademicos, etiquetasColumnas, anoInicio, anoFin);
+            archivoCreado = gestorTxtObj.crearArchivoTxt(rutaOutput, programasAcademicos, etiquetasColumnas, anoInicio, anoFin);
             break;
         case 3: // JSON
             cout << "Exportando archivo resultado.json..." << endl;
-            // archivoCreado = gestorJSONObj.crearArchivoJSON(rutaOutput, programasAcademicos, etiquetasColumnas);
+            archivoCreado = gestorJSONObj.crearArchivoJSON(rutaOutput, programasAcademicos, etiquetasColumnas, anoInicio, anoFin);
             break;
         case 4: // Ninguna
             cout << "No se ha creado ningun archivo." << endl;

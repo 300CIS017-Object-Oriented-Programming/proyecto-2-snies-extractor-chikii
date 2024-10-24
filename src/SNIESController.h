@@ -9,8 +9,8 @@
 #include "ProgramaAcademico.h"
 #include "Consolidado.h"
 #include "GestorCsv.h"
-/*#include "GestorTxt.h"
-#include "GestorJson.h"*/
+#include "GestorTxt.h"
+#include "GestorJSON.h"
 
 using namespace std;
 
@@ -20,8 +20,8 @@ class SNIESController
 private:
     map<int, ProgramaAcademico *> programasAcademicos;
     GestorCsv gestorCsvObj;
-    /*GestorTxt gestorTxtObj;
-    GestorJSON gestorJSONObj;*/
+    GestorTxt gestorTxtObj;
+    GestorJSON gestorJSONObj;
     vector<string> etiquetasColumnas;
     string rutaProgramasCSV;
     string rutaAdmitidos;
@@ -38,7 +38,7 @@ public:
     void procesarDatosCsv(string &, string &, int, int, int);
     void calcularDatosExtra(bool);
     void buscarProgramas(bool, string &, int);
-    bool procesarTipoOutput(int, string, map<int, ProgramaAcademico *> &, vector<string> &, GestorCsv &, int, int /*, GestorTxt &, GestorJSON &*/);
+    bool procesarTipoOutput(int, string, map<int, ProgramaAcademico *> &, vector<string> &, GestorCsv &, int, int, GestorTxt &, GestorJSON &);
 };
 
 #endif
