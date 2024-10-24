@@ -11,34 +11,30 @@ int dos = 2;
 int seis = 6;
 int ocho = 8;
 
-char detectarDelimitador(string &ruta)
+char GestorCsv::detectarDelimitador(string &ruta)
 {
-    ifstream archivo(ruta);
-    if (!archivo.is_open())
+    ifstream archivoProgramasCsv(ruta);
+    if (!(archivoProgramasCsv.is_open()))
     {
-        throw ios_base::failure("Archivo " + ruta + " no se pudo abrir correctamente");
+        throw ios_base::failure("Archivooo " + ruta + " no se pudo abrir correctamente");
     }
-
-    string primeraLinea;
-    if (getline(archivo, primeraLinea))
+    else
     {
-        // Posibles delimitadores
+        string linea;
+        string dato;
         char delimitadores[] = {',', ';', ':', '.'};
-
-        // Busca el primer delimitador en la línea
-        for (char delimitador : delimitadores)
+        getline(archivoProgramasCsv, linea);
+        while (getline(archivoProgramasCsv, linea))
         {
-            cout << "SE EJECUTO" << endl;
-            if (primeraLinea.find(delimitador) != string::npos)
+            for (char delimitador : delimitadores)
             {
-                // archivo.close();    // Cierra el archivo antes de retornar
-                return delimitador; // Retorna el primer delimitador encontrado
+                if (linea.find(delimitador) != string::npos)
+                {
+                    return delimitador;
+                }
             }
         }
     }
-
-    archivo.close(); // Cierra el archivo
-    throw ios_base::failure("No se encuentra delimitador");
 }
 
 vector<int> GestorCsv::leerProgramasCsv(string &ruta)
