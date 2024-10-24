@@ -31,9 +31,10 @@ public:
     SNIESController() = default;
     SNIESController(string &, string &, string &, string &, string &, string &, string &);
     ~SNIESController();
-    void procesarDatosCsv(string &, string &);
+    void procesarDatosCsv(string &, string &, int);
     void calcularDatosExtra(bool);
     void buscarProgramas(bool, string &, int);
+    bool procesarTipoOutput(int, string, map<int, ProgramaAcademico *> &, vector<string> &, GestorCsv & /*,GestorTXT& gestorTxtObj, GestorJSON& gestorJSONObj*/);
 };
 
 #endif
