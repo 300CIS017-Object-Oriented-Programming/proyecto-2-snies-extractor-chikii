@@ -36,23 +36,24 @@ SNIESController::~SNIESController()
     }
 }
 
-void SNIESController::procesarDatosCsv(string &ano1, string &ano2)
+void SNIESController::procesarDatosCsv(string &ano1, string &ano2, int opcionOutput)
 {
     vector<int> codigosSnies;
     vector<vector<string>> programasAcademicosVector;
     int posicion;
     int columna;
-  // Cambios realizados por el issue: 3-funcionamiento-de-rango-de-anios-en-proyecto
+    // Cambios realizados por el issue: 3-funcionamiento-de-rango-de-anios-en-proyecto
     int a, b, c, d, e, f, g, h, ii, j, k, l, m, n, o, p, q, r, s, t, u, v, x, y, z, ab, ac, ad, ae, af, ag, ah, ai, aj, ak, al, am, an, ao, ap, aq, ar;
     vector<int> posicionColumnas;
     // cout << "antes leer programas csv" << endl;
     codigosSnies = gestorCsvObj.leerProgramasCsv(rutaProgramasCSV);
+
     // cout << "despues leer programas csv" << endl;
     programasAcademicosVector = gestorCsvObj.leerArchivoPrimera(rutaAdmitidos, ano1, codigosSnies);
     // cout << "Esta es la ruta de admitidos " << rutaAdmitidos << endl;
     //  cout << "despues leer archivos Primera" << endl;
     etiquetasColumnas = programasAcademicosVector[0]; // Esta linea recibe todas las etiquetas para luego procesarlas una a una
-  // *** FIN DE CAMBIO ***
+                                                      // *** FIN DE CAMBIO ***
     /*
     try
     {
@@ -68,7 +69,6 @@ void SNIESController::procesarDatosCsv(string &ano1, string &ano2)
         cerr << "ERROR: " << e.what() << endl;
     }
     */
-
 
     for (int i = 0; i < etiquetasColumnas.size(); i++)
     {
@@ -466,13 +466,59 @@ void SNIESController::procesarDatosCsv(string &ano1, string &ano2)
         }
     }
 
-    bool archivoCreado;
-    archivoCreado = gestorCsvObj.crearArchivo(rutaOutput, programasAcademicos, etiquetasColumnas);
-    // cout << archivoCreado << endl;
-    /*catch (const ios_base::failure &e)
+    bool archivoCreado = procesarTipoOutput(opcionOutput, rutaOutput, programasAcademicos, etiquetasColumnas, gestorCsvObj);
+
+    if (!archivoCreado)
+    {
+        cout << "No se pudo crear el archivo de salida." << endl;
+    }
+    else
+    {
+        cout << "Archivo de salida creado exitosamente." << endl;
+    }
+}
+
+bool SNIESController::procesarTipoOutput(int opcion, string rutaOutput, map<int, ProgramaAcademico *> &programasAcademicos, vector<string> &etiquetasColumnas, GestorCsv &gestorCsvObj) /*, GestorTXT &gestorTxtObj, GestorJSON &gestorJSONObj */
+{
+    bool archivoCreado = false;
+
+    try
+    {
+        switch (opcion)
+        {
+        case 1: // CSV
+            cout << "Exportando archivo resultado.csv..." << endl;
+            archivoCreado = gestorCsvObj.crearArchivo(rutaOutput, programasAcademicos, etiquetasColumnas);
+            break;
+        case 2: // TXT
+            cout << "Exportando archivo resultado.txt..." << endl;
+            // archivoCreado = gestorTxtObj.crearArchivo(rutaOutput, programasAcademicos, etiquetasColumnas);
+            break;
+        case 3: // JSON
+            cout << "Exportando archivo resultado.json..." << endl;
+            // archivoCreado = gestorJSONObj.crearArchivo(rutaOutput, programasAcademicos, etiquetasColumnas);
+            break;
+        case 4: // Ninguna
+            cout << "No se ha creado ningun archivo." << endl;
+            break;
+        default: // Manejar entradas fuera del rango esperado
+            throw out_of_range("Opción inválida. Debe ingresar un valor entre 1 y 4.");
+        }
+    }
+    catch (const invalid_argument &e)
     {
         cerr << "ERROR: " << e.what() << endl;
-    }*/
+    }
+    catch (const out_of_range &e)
+    {
+        cerr << "ERROR: " << e.what() << endl;
+    }
+    catch (const ios_base::failure &e)
+    {
+        cerr << "Error de entrada/salida: " << e.what() << endl;
+    }
+
+    return archivoCreado;
 }
 
 void SNIESController::buscarProgramas(bool flag, string &palabraClave, int idComparacion)
@@ -606,7 +652,7 @@ void SNIESController::calcularDatosExtra(bool flag)
         if ((SumaNeosPrimerSemestre == 0 && SumaNeosSegundoSemestre == 0 && SumaNeosTercerSemestre == 0) || (SumaNeosSegundoSemestre == 0 && SumaNeosTercerSemestre == 0 && SumaNeosCuartoSemestre == 0))
         {
             etiquetas3 = {to_string(programa->getCodigoSniesDelPrograma()),
-                            programa->getProgramaAcademico()};
+                          programa->getProgramaAcademico()};
         }
     }
     etiquetas1 = {to_string(sumaPrimerAno), to_string(sumaSegundoAno)};
