@@ -201,22 +201,26 @@ direction BT
         +bool crearArchivoExtra(string &ruta,vector<vector<string>> datosAImprimir)
     }
     class SNIESController {
-        -map <int, ProgramaAcademico*> programasAcademicos
-        -GestorCsv gestorCsvObj
-        -vector<string> etiquetasColumnas
-        -string rutaProgramasCsv
-        -string rutaAdmitidos
-        -string rutaGraduados
-        -string rutaInscritos
-        -string rutaMatriculados
-        -string rutaMatriculadosPrimerSemestre
-        -string rutaOutput
-        +SNIESController("incializar con strings de rutas")
-        +~SNIESController()
-        +void procesarDatosCsv(string &ano1, string &ano2)
-        +void calcularDatosExtra(bool)
-        +void buscarProgramas(bool, string &, int)
+
+    -map<int, ProgramaAcademico *> programasAcademicos
+    -GestorCsv gestorCsvObj
+    -vector<string> etiquetasColumnas
+    -string rutaProgramasCSV
+    -string rutaAdmitidos
+    -string rutaGraduados
+    -string rutaInscritos
+    -string rutaMatriculados
+    -string rutaMatriculadosPrimerSemestre
+    -string rutaOutput
+
+    +SNIESController() = default
+    +SNIESController(string &, string &, string &, string &, string &, string &, string &)
+    +~SNIESController()
+    +void procesarDatosCsv(string &, string &)
+    +void calcularDatosExtra(bool)
+    +void buscarProgramas(bool, string &, int)
     }
+
     class View {
         SNIESController controlador
         +View()
