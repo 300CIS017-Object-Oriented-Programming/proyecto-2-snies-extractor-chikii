@@ -158,34 +158,38 @@ direction BT
         +getConsolidado()
     }
     class Consolidado {
-        -int inscritos
-        -int admitidos
-        -int matriculadosPrimerSemestre
-        -int matriculados
-        -int graduados
-        -int idSexo
-        -string sexo
-        -int ano
-        -int semestre
-        +setIdSexo(int)
-        +setSexo(string)
-        +setAno(int)
-        +setSemestre(int)
-        +getIdSexo()
-        +getSexo()
-        +getAno()
-        +getSemestre()
-        +setInscritos(int)
-        +setAdmitidos(int)
-        +setMatriculadosPrimerSemestre(int)
-        +setMatriculados(int)
-        +setGraduados(int)
-        +getInscritos()
-        +getAdmitidos()
-        +getMatriculadosPrimerSemestre()
-        +getMatriculados()
-        +getGraduados()
+    -int idSexo
+    -string sexo
+    -int ano
+    -int semestre
+    -int inscritos
+    -int admitidos
+    -int matriculados
+    -int matriculadosPrimerSemestre
+    -int graduados
+
+    +Consolidado()
+    +Consolidado(int, string, int, int, int, int, int, int, int)
+    +int getIdSexo()
+    +void setIdSexo(int)
+    +string getSexo()
+    +void setSexo(const string &)
+    +int getAno()
+    +void setAno(int)
+    +int getSemestre()
+    +void setSemestre(int)
+    +int getInscritos()
+    +void setInscritos(int)
+    +int getAdmitidos()
+    +void setAdmitidos(int)
+    +int getMatriculados()
+    +void setMatriculados(int)
+    +int getMatriculadosPrimerSemestre()
+    +void setMatriculadosPrimerSemestre(int)
+    +int getGraduados()
+    +void setGraduados(int)
     }
+
     class GestorCsv {
         +GestorCsv() = default
         +vector<int> leerProgramasCsv(string &ruta)
