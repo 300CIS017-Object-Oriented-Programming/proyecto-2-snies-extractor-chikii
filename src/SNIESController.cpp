@@ -554,7 +554,7 @@ void SNIESController::calcularDatosExtra(bool flag)
     vector<vector<string>> matrizEtiquetas1;
     vector<vector<string>> matrizEtiquetas2;
     vector<vector<string>> matrizEtiquetas3;
-    vector<string> etiquetas1 = {"Suma Estudiantes Matriculados de Programas Seleccionados (Presencial o Virtual) Primer año", "Suma Estudiantes Matriculados de Programas Seleccionados (Presencial o Virtual)"};
+    vector<string> etiquetas1 = {"Suma Estudiantes Matriculados de Programas Seleccionados (Presencial o Virtual) Primer ano", "Suma Estudiantes Matriculados de Programas Seleccionados (Presencial o Virtual)"};
     matrizEtiquetas1.push_back(etiquetas1);
     vector<string> etiquetas2 = {"Codigo Snies", "Nombre del Programa", "Nombre del Institucion", "Diferencial porcentual anual de NEOS"};
     matrizEtiquetas2.push_back(etiquetas2);
