@@ -158,33 +158,36 @@ direction BT
         +getConsolidado()
     }
     class Consolidado {
-        -int inscritos
-        -int admitidos
-        -int matriculadosPrimerSemestre
-        -int matriculados
-        -int graduados
-        -int idSexo
-        -string sexo
-        -int ano
-        -int semestre
-        +setIdSexo(int)
-        +setSexo(string)
-        +setAno(int)
-        +setSemestre(int)
-        +getIdSexo()
-        +getSexo()
-        +getAno()
-        +getSemestre()
-        +setInscritos(int)
-        +setAdmitidos(int)
-        +setMatriculadosPrimerSemestre(int)
-        +setMatriculados(int)
-        +setGraduados(int)
-        +getInscritos()
-        +getAdmitidos()
-        +getMatriculadosPrimerSemestre()
-        +getMatriculados()
-        +getGraduados()
+    -int idSexo
+    -string sexo
+    -int ano
+    -int semestre
+    -int inscritos
+    -int admitidos
+    -int matriculados
+    -int matriculadosPrimerSemestre
+    -int graduados
+
+    +Consolidado()
+    +Consolidado(int, string, int, int, int, int, int, int, int)
+    +int getIdSexo()
+    +void setIdSexo(int)
+    +const string getSexo()
+    +void setSexo(const string &)
+    +int getAno()
+    +void setAno(int)
+    +int getSemestre()
+    +void setSemestre(int)
+    +int getInscritos()
+    +void setInscritos(int)
+    +int getAdmitidos()
+    +void setAdmitidos(int)
+    +int getMatriculados()
+    +void setMatriculados(int)
+    +int getMatriculadosPrimerSemestre()
+    +void setMatriculadosPrimerSemestre(int)
+    +int getGraduados()
+    +void setGraduados(int)
     }
     class GestorCsv {
         +GestorCsv() = default
@@ -197,21 +200,27 @@ direction BT
         +bool crearArchivoExtra(string &ruta,vector<vector<string>> datosAImprimir)
     }
     class SNIESController {
-        -map <int, ProgramaAcademico*> programasAcademicos
-        -GestorCsv gestorCsvObj
-        -vector<string> etiquetasColumnas
-        -string rutaProgramasCsv
-        -string rutaAdmitidos
-        -string rutaGraduados
-        -string rutaInscritos
-        -string rutaMatriculados
-        -string rutaMatriculadosPrimerSemestre
-        -string rutaOutput
-        +SNIESController("incializar con strings de rutas")
-        +~SNIESController()
-        +void procesarDatosCsv(string &ano1, string &ano2)
-        +void calcularDatosExtra(bool)
-        +void buscarProgramas(bool, string &, int)
+
+private:
+    -map<int, ProgramaAcademico *> programasAcademicos;
+    -GestorCsv gestorCsvObj
+    -GestorTxt gestorTxtObj
+    -GestorJSON gestorJSONObj
+    -vector<string> etiquetasColumnas
+    -string rutaProgramasCSV
+    -string rutaAdmitidos
+    -string rutaGraduados
+    -string rutaInscritos
+    -string rutaMatriculados
+    -string rutaMatriculadosPrimerSemestre
+    -string rutaOutput
+    +SNIESController() = default
+    +SNIESController(string &, string &, string &, string &, string &, string &, string &)
+    +~SNIESController()
+    +void procesarDatosCsv(string &, string &, int, int, int)
+    +void calcularDatosExtra(bool)
+    +void buscarProgramas(bool, string &, int)
+    +bool procesarTipoOutput(int, string, map<int, ProgramaAcademico *> &, vector<string> &, GestorCsv &, int, int, GestorTxt &, GestorJSON &)
     }
     class View {
         SNIESController controlador
@@ -226,7 +235,15 @@ direction BT
     class Main {
         + int main()
     }
+class GestorJSON{
 
+    +GestorJSON()
+    +bool crearArchivoJSON(string &ruta, map<int, ProgramaAcademico *> &mapadeProgramasAcademicos, vector<string> etiquetasColumnas, int, int)
+}
+class GestorTxt{
+    +GestorTxt()
+    +bool crearArchivoTxt(string &ruta, map<int, ProgramaAcademico *> &mapadeProgramasAcademicos, vector<string> etiquetasColumnas, int, int)
+}
 ProgramaAcademico o-- Consolidado : tiene varios
 View <.. Main : usa
 View --> SNIESController : tiene un
