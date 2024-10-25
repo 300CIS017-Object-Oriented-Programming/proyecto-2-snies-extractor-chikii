@@ -223,15 +223,21 @@ private:
     +bool procesarTipoOutput(int, string, map<int, ProgramaAcademico *> &, vector<string> &, GestorCsv &, int, int, GestorTxt &, GestorJSON &)
     }
     class View {
-        SNIESController controlador
-        +View()
-        +~View()
-        +bool pantallaBienvenido()
-        +void visualizacionDatosExtra()
-        +void buscarPorPalabraClaveYFormacion()
-        +void salir()
-        +bool isConvetibleToInt()
+     
+    -SNIESController controlador
+    +View()
+    +~View()
+    +bool mostrarPantallaBienvenido()
+    +void mostrarDatosExtra()
+    +void buscarPorPalabraClaveYFormacion()
+    +void salir()
+    +bool isConvetibleToInt(const string &)
+    +void revisionAnios(string)
+    +void revisionAniosRango(string, string)
+    +int preguntarFormatoOutputExtra()
+    +int preguntarFormatoOutputResultado()
     }
+
     class Main {
         + int main()
     }
