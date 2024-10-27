@@ -18,6 +18,8 @@ SNIESController::SNIESController(string &nuevaRutaProgramasCSV, string &nuevaRut
 {
     // FIXME quitar los parámetros de las rutas de los parametros del constructor, usar el archivo de settings.h para poner las constantes
     gestorCsvObj = GestorCsv();
+    gestorTxtObj = GestorTxt();
+    gestorJSONObj = GestorJSON();
     rutaProgramasCSV = nuevaRutaProgramasCSV;
     rutaAdmitidos = nuevaRutaAdmitidos;
     rutaGraduados = nuevaRutaGraduados;
@@ -36,7 +38,7 @@ SNIESController::~SNIESController()
     }
 }
 
-void SNIESController::procesarDatosCsv(string &ano1, string &ano2, int opcionOutput)
+void SNIESController::procesarDatosCsv(string &ano1, string &ano2, int opcionOutput, int anoInicio, int anoFin)
 {
     vector<int> codigosSnies;
     vector<vector<string>> programasAcademicosVector;
@@ -465,8 +467,10 @@ void SNIESController::procesarDatosCsv(string &ano1, string &ano2, int opcionOut
             }
         }
     }
+    int anoActual = stoi(ano1);
+    int anoSiguiente = stoi(ano2);
 
-    bool archivoCreado = procesarTipoOutput(opcionOutput, rutaOutput, programasAcademicos, etiquetasColumnas, gestorCsvObj);
+    bool archivoCreado = procesarTipoOutput(opcionOutput, rutaOutput, programasAcademicos, etiquetasColumnas, gestorCsvObj, anoActual, anoSiguiente, gestorTxtObj, gestorJSONObj);
 
     if (!archivoCreado)
     {
@@ -478,7 +482,7 @@ void SNIESController::procesarDatosCsv(string &ano1, string &ano2, int opcionOut
     }
 }
 
-bool SNIESController::procesarTipoOutput(int opcion, string rutaOutput, map<int, ProgramaAcademico *> &programasAcademicos, vector<string> &etiquetasColumnas, GestorCsv &gestorCsvObj) /*, GestorTXT &gestorTxtObj, GestorJSON &gestorJSONObj */
+bool SNIESController::procesarTipoOutput(int opcion, string rutaOutput, map<int, ProgramaAcademico *> &programasAcademicos, vector<string> &etiquetasColumnas, GestorCsv &gestorCsvObj, int anoInicio, int anoFin, GestorTxt &gestorTxtObj, GestorJSON &gestorJSONObj)
 {
     bool archivoCreado = false;
 
@@ -488,15 +492,15 @@ bool SNIESController::procesarTipoOutput(int opcion, string rutaOutput, map<int,
         {
         case 1: // CSV
             cout << "Exportando archivo resultado.csv..." << endl;
-            archivoCreado = gestorCsvObj.crearArchivo(rutaOutput, programasAcademicos, etiquetasColumnas);
+            archivoCreado = gestorCsvObj.crearArchivoCsv(rutaOutput, programasAcademicos, etiquetasColumnas, anoInicio, anoFin);
             break;
         case 2: // TXT
             cout << "Exportando archivo resultado.txt..." << endl;
-            // archivoCreado = gestorTxtObj.crearArchivo(rutaOutput, programasAcademicos, etiquetasColumnas);
+            archivoCreado = gestorTxtObj.crearArchivoTxt(rutaOutput, programasAcademicos, etiquetasColumnas, anoInicio, anoFin);
             break;
         case 3: // JSON
             cout << "Exportando archivo resultado.json..." << endl;
-            // archivoCreado = gestorJSONObj.crearArchivo(rutaOutput, programasAcademicos, etiquetasColumnas);
+            archivoCreado = gestorJSONObj.crearArchivoJSON(rutaOutput, programasAcademicos, etiquetasColumnas, anoInicio, anoFin);
             break;
         case 4: // Ninguna
             cout << "No se ha creado ningun archivo." << endl;
@@ -550,7 +554,7 @@ void SNIESController::calcularDatosExtra(bool flag)
     vector<vector<string>> matrizEtiquetas1;
     vector<vector<string>> matrizEtiquetas2;
     vector<vector<string>> matrizEtiquetas3;
-    vector<string> etiquetas1 = {"Suma Estudiantes Matriculados de Programas Seleccionados (Presencial o Virtual) Primer año", "Suma Estudiantes Matriculados de Programas Seleccionados (Presencial o Virtual)"};
+    vector<string> etiquetas1 = {"Suma Estudiantes Matriculados de Programas Seleccionados (Presencial o Virtual) Primer ano", "Suma Estudiantes Matriculados de Programas Seleccionados (Presencial o Virtual)"};
     matrizEtiquetas1.push_back(etiquetas1);
     vector<string> etiquetas2 = {"Codigo Snies", "Nombre del Programa", "Nombre del Institucion", "Diferencial porcentual anual de NEOS"};
     matrizEtiquetas2.push_back(etiquetas2);

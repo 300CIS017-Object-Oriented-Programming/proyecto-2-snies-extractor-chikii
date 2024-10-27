@@ -52,7 +52,7 @@ void View::revisionAniosRango(string anoRango1, string anoRango2)
 
         // int output = preguntarFormatoOutputResultado();
 
-        controlador.procesarDatosCsv(anoActualStr, anoSiguienteStr, output);
+        controlador.procesarDatosCsv(anoActualStr, anoSiguienteStr, output, anoInicio, anoFin);
     }
 
     cout << "Datos procesados con exito!" << endl;
@@ -167,35 +167,26 @@ int View::preguntarFormatoOutputExtra()
         {
         case 1: // CSV
             cout << "Exportando archivo extra.csv..." << endl;
-            // controlador.calcularDatosExtra(true);
+            return 1;
             break;
 
         case 2: // TXT
             cout << "Exportando archivo extra.txt..." << endl;
-            // archivoCreado = gestorTxtObj.crearArchivo(rutaOutput, programasAcademicos, etiquetasColumnas);
+            return 2;
             break;
 
         case 3: // JSON
             cout << "Exportando archivo extra.json..." << endl;
-            // archivoCreado = gestorJSONObj.crearArchivo(rutaOutput, programasAcademicos, etiquetasColumnas);
+            return 3;
             break;
 
         default: // Entrada inválida
             throw out_of_range("Opcion invalida. Debe ingresar un valor entre 1 y 3.");
         }
     }
-    catch (const invalid_argument &e)
-    {
-        cerr << "ERROR: " << e.what() << endl;
-        cin.clear();
-    }
     catch (const out_of_range &e)
     {
         cerr << "ERROR: " << e.what() << endl;
-    }
-    catch (const ios_base::failure &e)
-    {
-        cerr << "Error de entrada/salida: " << e.what() << endl;
     }
 }
 
@@ -205,36 +196,31 @@ void View::mostrarDatosExtra()
     {
         int opcionExtra;
         cout << endl;
-        cout << "A continuacion escoge cual de los dos archivos deseas exportar con datos relevantes de los programas academicos seleccionados:" << endl;
+        cout << "A continuacion exportaremos un archvio con datos relevantes de los programas academicos seleccionados:" << endl;
         cout << "1) " << endl;
         cout << " - Consolidado de estudiantes por ano en programas presenciales o virtuales" << endl;
         cout << " - Diferencia porcentual anual entre la cantidad de nuevos matriculados durante los anos de busqueda por programa" << endl;
         cout << " - Lista de programas sin nuevos matriculados en 3 semestres consecutivos" << endl;
-        cout << "2) Resultado de busqueda por clave y formacion" << endl;
-        cout << "3) No deseo exportar ningun extra" << endl;
+        cout << " - Resultado de busqueda por clave y formacion" << endl;
+        cout << "2) No deseo exportar ningun extra" << endl;
         cout << endl;
         cout << "Que opcion desea exportar?" << endl;
         cin >> opcionExtra;
 
         cout << "\n";
-        int formatoOutput;
+        int formatoOutput = preguntarFormatoOutputExtra();
         switch (opcionExtra)
         {
-        case 1:
-            cout << "Creando archivo con requisitos 1a,1b y 1c..." << endl;
-            formatoOutput = preguntarFormatoOutputExtra();
-            // ....
-            break;
-        case 2: // csv
+        case 1: // csv
             cout << "Creando archivo resultado de busqueda por clave y formacion..." << endl;
             formatoOutput = preguntarFormatoOutputExtra();
             controlador.calcularDatosExtra(true);
             break;
-        case 3: // ningun
+        case 2: // ningun
             controlador.calcularDatosExtra(false);
             break;
         default: // Manejar entradas fuera del rango esperado
-            throw out_of_range("Opcion invalida. Debe ingresar un valor entre 1 y 3.");
+            throw out_of_range("Opcion invalida. Debe ingresar un valor entre 1 y 2.");
         }
     }
     catch (const invalid_argument &e)

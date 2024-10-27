@@ -17,7 +17,7 @@ void Consolidado::setIdSexo(int idSexo)
 }
 
 // Getter y Setter de sexo
-string Consolidado::getSexo()
+const string Consolidado::getSexo()
 {
     return sexo;
 }
@@ -102,6 +102,5 @@ void Consolidado::setGraduados(int graduados)
 {
     this->graduados = graduados;
 }
-
 
 // calidad bien
