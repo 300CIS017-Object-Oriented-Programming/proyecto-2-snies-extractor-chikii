@@ -20,6 +20,10 @@ public:
     void buscarPorPalabraClaveYFormacion();
     void salir();
     bool isConvetibleToInt(const string &);
+    void revisionAnios(string);
+    void revisionAniosRango(string, string);
+    int preguntarFormatoOutputExtra();
+    int preguntarFormatoOutputResultado();
 };
 
 #endif

@@ -2,17 +2,24 @@
 
 View::View()
 {
-    // NEW quitar estas variables de aquí y del constructor del SNIESController
-    //  estas constantes las leerá el SNIESController del archivo de Settings.h
-    //  Completar el archivo con el resto de constantes necesarias
-    string ruta1 = string("C:/SNIES_EXTRACTOR/inputs/programas.csv");
-    string ruta2 = string("C:/SNIES_EXTRACTOR/inputs/admitidos");
-    string ruta3 = string("C:/SNIES_EXTRACTOR/inputs/graduados");
-    string ruta4 = string("C:/SNIES_EXTRACTOR/inputs/inscritos");
-    string ruta5 = string("C:/SNIES_EXTRACTOR/inputs/matriculados");
-    string ruta6 = string("C:/SNIES_EXTRACTOR/inputs/matriculadosPrimerSemestre");
-    string ruta7 = string("C:/SNIES_EXTRACTOR/outputs/");
-    controlador = SNIESController(ruta1, ruta2, ruta3, ruta4, ruta5, ruta6, ruta7);
+
+    try
+    {
+        string ruta1 = string("C:/proyecto-2-snies-extractor-chikii/docs/inputs/programas.csv");
+        string ruta2 = string("C:/proyecto-2-snies-extractor-chikii/docs/inputs/admitidos");
+        string ruta3 = string("C:/proyecto-2-snies-extractor-chikii/docs/inputs/graduados");
+        string ruta4 = string("C:/proyecto-2-snies-extractor-chikii/docs/inputs/inscritos");
+        string ruta5 = string("C:/proyecto-2-snies-extractor-chikii/docs/inputs/matriculados");
+        string ruta6 = string("C:/proyecto-2-snies-extractor-chikii/docs/inputs/matriculadosPrimerSemestre");
+        string ruta7 = string("C:/proyecto-2-snies-extractor-chikii/docs/outputs/");
+
+        controlador = SNIESController(ruta1, ruta2, ruta3, ruta4, ruta5, ruta6, ruta7);
+    }
+    catch (const ios_base::failure &e)
+    {
+        cerr << "ERROR: " << e.what() << std::endl;
+        throw;
+    }
 }
 
 View::~View()
@@ -20,85 +27,75 @@ View::~View()
     controlador.~SNIESController();
 }
 
+void View::revisionAniosRango(string anoRango1, string anoRango2)
+{
+    int anoInicio = stoi(anoRango1);
+    int anoFin = stoi(anoRango2);
+
+    if (anoInicio < 2021 || anoFin > 2024 || anoInicio >= anoFin)
+    {
+        throw domain_error("El rango de anos no es valido, intente de nuevo.");
+    }
+
+    cout << "Procesando el rango de anos..." << endl;
+
+    int output = preguntarFormatoOutputResultado();
+
+    for (int anoActual = anoInicio; anoActual < anoFin; ++anoActual)
+    {
+        int anoSiguiente = anoActual + 1;
+        cout << endl;
+        cout << "Procesando datos para el ano: " << anoActual << " - " << anoSiguiente << endl;
+
+        string anoActualStr = to_string(anoActual);
+        string anoSiguienteStr = to_string(anoSiguiente);
+
+        // int output = preguntarFormatoOutputResultado();
+
+        controlador.procesarDatosCsv(anoActualStr, anoSiguienteStr, output, anoInicio, anoFin);
+    }
+
+    cout << "Datos procesados con exito!" << endl;
+}
+
 bool View::mostrarPantallaBienvenido()
 {
     bool parametrizacionBool = false;
+    bool inputValido = false;
 
-    cout << "Bienvenido al SNIES-Extractor!" << endl;
-    cout << "=========================================" << endl;
-    cout << "Recuerde que para el correcto funcionamiento del programa tuvo que haber parametrizado" << endl;
-    cout << "antes la carpeta SNIES_EXTRACTOR en el disco duro C:, con sus respectivas carpetas inputs y outputs" << endl;
-    cout << "y todos los archivo CSV del SNIES." << endl;
-    cout << "Si ya hizo esto, escriba 'Y', de lo contrario 'N', y Enter: " << endl;
-    char userAnswer = 'Y'; // FIXME cuando se arregle el debugger
-    // cin >> userAnswer;
-    // cout << endl;
-    // FIXME verificar que el usuario ingree un valor igual al esperado incluir todo dentro de un while para
-    // para asegurar que el usuario ingrese un valor valido
-    // pasarlo a un método que se pueda usar en otros lugares
-    userAnswer = static_cast<char>(tolower(userAnswer));
-    if (userAnswer == 'y')
+    cout << endl;
+    cout << " -------------- SNIES-Extractor --------------------" << endl;
+    cout << endl;
+    cout << "NOTA: Para el funcionamiento correcto del programa tuvo que haber parametrizado" << endl;
+    cout << "la carpeta SNIES_EXTRACTOR en el disco duro, incluyendo los archivos CSV del SNIES." << endl;
+
+    while (!inputValido)
     {
-        parametrizacionBool = true;
-
-        string userText;
-        cout << "A continuacion se procesaran los datos de los programas academicos seleccionados en /programas.csv..." << endl;
-
-        string anio1("abc");
-        string ano2("abc");
-        string anoAux;
-        int i = 0;
-        bool anosValido = false;
-        // FIXME pasar la lógica del bucle a un método reutlizable
-        // Usar en el while una bandera y simplificar el código
-        // Bucle para leer un valor valido del año1
-        while (!(isConvetibleToInt(anio1)))
+        try
         {
-            if (i == 1)
-            {
-                cout << "El valor ingresado fue invalido!" << endl;
-                cout << "Por favor ingrese un valor valido la proxima" << endl;
-                cout << "Presione 'OK' y Enter para continuar: " << endl;
-                cin >> userText;
-                cout << endl;
-            }
-            cout << "Escriba el primer ano de busqueda: " << endl;
-            cin >> anio1;
+            // Solicitamos el año de busqueda
+            string anioRango1, anioRango2;
+            cout << "Escriba el primer ano del rango de busqueda: " << endl;
+            cin >> anioRango1;
+            cout << "Escriba el segundo ano del rango de busqueda: " << endl;
+            cin >> anioRango2;
             cout << endl;
-            i = 1;
+
+            revisionAniosRango(anioRango1, anioRango2);
+
+            // Si llegamos aqui sin excepciones, la parametrizacion es correcta
+            inputValido = true;
+            parametrizacionBool = true;
         }
 
-        i = 0;
-        // Bucle para leer un valor valido del año2
-        while (!(isConvetibleToInt(ano2)))
+        catch (const ios_base::failure &e)
         {
-            if (i == 1)
-            {
-                cout << "El valor ingresado fue invalido!" << endl;
-                cout << "Por favor ingrese un valor valido la proxima" << endl;
-                cout << "Presione 'OK' y Enter para continuar: " << endl;
-                cin >> userText;
-                cout << endl;
-            }
-            cout << "Escriba el segundo ano de busqueda: " << endl;
-            cin >> ano2;
-            cout << endl;
-            i = 1;
+            cerr << "Error de entrada/salida: " << e.what() << endl;
         }
-
-        // Organizo los años
-        // FIXME: Crear un método para hacer que el segundo año sea siempre
-        // mayor que el primer año
-        if (stoi(ano2) < stoi(anio1))
+        catch (const domain_error &e)
         {
-            anoAux = anio1;
-            anio1 = ano2;
-            ano2 = anoAux;
+            cerr << "Error: " << e.what() << endl;
         }
-
-        cout << "Procesando datos ..." << endl;
-        controlador.procesarDatosCsv(anio1, ano2);
-        cout << "Datos procesados con exito!" << endl;
     }
     return parametrizacionBool;
 }
@@ -106,35 +103,144 @@ bool View::mostrarPantallaBienvenido()
 void View::salir()
 {
     cout << "Cerrando programa..." << endl;
-    cout << "Recuerde revisar la carpeta de outputs para los archivos .csv exportados" << endl;
-    cout << "Programa Cerrado con exito!" << endl;
+    // cout << "Recuerde revisar la carpeta de outputs para los archivos .csv exportados" << endl;
+    //  cout << "Programa Cerrado con exito!" << endl;
+}
+
+int View::preguntarFormatoOutputResultado()
+{
+    int opcion;
+    bool inputValido = false;
+
+    cout << "--------------------------------------------" << endl;
+    cout << "Como desea exportar el archivo de resultados?" << endl;
+    cout << "1) CSV" << endl;
+    cout << "2) TXT" << endl;
+    cout << "3) JSON" << endl;
+
+    while (!inputValido)
+    {
+        cin >> opcion;
+        switch (opcion)
+        {
+        case 1:
+            // cout << "Exportando archivo resultado.csv..." << endl;
+            cout << endl;
+            return opcion = 1;
+            break;
+
+        case 2: // TXT
+            // cout << "Exportando archivo resultado.txt..." << endl;
+            cout << endl;
+            return opcion = 2;
+            break;
+
+        case 3: // JSON
+            // cout << "Exportando archivo resultado.json..." << endl;
+            cout << endl;
+            return opcion = 3;
+            break;
+
+        default: // Entrada inválida
+            throw out_of_range("Opcion invalida. Debe ingresar un valor entre 1 y 3.");
+        }
+    }
+    return opcion;
+}
+
+int View::preguntarFormatoOutputExtra()
+{
+    int opcionYN;
+
+    cout << "--------------------------------------------" << endl;
+    cout << "Como desea exportar el archivo de extra?" << endl;
+    cout << "1) CSV" << endl;
+    cout << "2) TXT" << endl;
+    cout << "3) JSON" << endl;
+
+    try
+    {
+        cin >> opcionYN;
+        cout << "\n";
+
+        switch (opcionYN)
+        {
+        case 1: // CSV
+            cout << "Exportando archivo extra.csv..." << endl;
+            return 1;
+            break;
+
+        case 2: // TXT
+            cout << "Exportando archivo extra.txt..." << endl;
+            return 2;
+            break;
+
+        case 3: // JSON
+            cout << "Exportando archivo extra.json..." << endl;
+            return 3;
+            break;
+
+        default: // Entrada inválida
+            throw out_of_range("Opcion invalida. Debe ingresar un valor entre 1 y 3.");
+        }
+    }
+    catch (const out_of_range &e)
+    {
+        cerr << "ERROR: " << e.what() << endl;
+    }
 }
 
 void View::mostrarDatosExtra()
 {
-    char opcionYN;
-    cout << "A continuacion vamos a mostrar datos relevantes de los programas academicos seleccionados" << "\n"
-         << endl;
-    cout << "Desea Convertir los datos a un archivo CSV?(Y/N): " << endl;
-    cin >> opcionYN;
-    opcionYN = tolower(opcionYN);
-    cout << "\n";
-    // FIXME verificar que el usuario ingrese un valor igual al esperado, return true si es Y, false si es N, y no sale si no retorna un valor válido
-    // Simplificar el código de acuerdo a ese ajuste
-    if (opcionYN == 'y')
+    try
     {
-        controlador.calcularDatosExtra(true);
-    }
+        int opcionExtra;
+        cout << endl;
+        cout << "A continuacion exportaremos un archvio con datos relevantes de los programas academicos seleccionados:" << endl;
+        cout << "1) " << endl;
+        cout << " - Consolidado de estudiantes por ano en programas presenciales o virtuales" << endl;
+        cout << " - Diferencia porcentual anual entre la cantidad de nuevos matriculados durante los anos de busqueda por programa" << endl;
+        cout << " - Lista de programas sin nuevos matriculados en 3 semestres consecutivos" << endl;
+        cout << " - Resultado de busqueda por clave y formacion" << endl;
+        cout << "2) No deseo exportar ningun extra" << endl;
+        cout << endl;
+        cout << "Que opcion desea exportar?" << endl;
+        cin >> opcionExtra;
 
-    else
+        cout << "\n";
+        int formatoOutput = preguntarFormatoOutputExtra();
+        switch (opcionExtra)
+        {
+        case 1: // csv
+            cout << "Creando archivo resultado de busqueda por clave y formacion..." << endl;
+            formatoOutput = preguntarFormatoOutputExtra();
+            controlador.calcularDatosExtra(true);
+            break;
+        case 2: // ningun
+            controlador.calcularDatosExtra(false);
+            break;
+        default: // Manejar entradas fuera del rango esperado
+            throw out_of_range("Opcion invalida. Debe ingresar un valor entre 1 y 2.");
+        }
+    }
+    catch (const invalid_argument &e)
     {
-        controlador.calcularDatosExtra(false);
+        cerr << "ERROR: " << e.what() << endl;
+        cin.clear();
+    }
+    catch (const out_of_range &e)
+    {
+        cerr << "ERROR: " << e.what() << endl;
+    }
+    catch (const ios_base::failure &e)
+    {
+        cerr << "Error de entrada/salida: " << e.what() << endl;
     }
 }
 
 void View::buscarPorPalabraClaveYFormacion()
 {
-    char opcionYN = 'y', opcionCSV;
+    char opcionYN = 'y', opcionOutput;
     string palabraClave;
     bool convertirCSV;
     int idFormacionAcademica;
@@ -148,12 +254,12 @@ void View::buscarPorPalabraClaveYFormacion()
 
         if (opcionYN == 'y')
         {
-            cout << "Deseas convertir convertir los datos del programa academico a un CSV?(Y/N): " << endl;
-            cin >> opcionCSV;
+            /*cout << "Deseas convertir los datos del programa academico a un CSV, TXT O JSON?: " << endl;
+            cin >> opcionOutput;
             cout << "\n";
-            opcionCSV = tolower(opcionCSV);
+            opcionOutput = tolower(opcionOutput);
 
-            if (opcionCSV == 'y')
+            if (opcionOutput == 'y')
             {
                 convertirCSV = true;
             }
@@ -161,7 +267,7 @@ void View::buscarPorPalabraClaveYFormacion()
             else
             {
                 convertirCSV = false;
-            }
+            }*/
 
             cout << "Escriba la palabra clave para buscar los programas por nombre:" << endl;
             cin >> palabraClave;
